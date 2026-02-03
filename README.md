@@ -1,36 +1,163 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏗️ ArchiDuo Portfolio
 
-## Getting Started
+Site híbrido para arquiteta: **portfólio profissional público** + **área privada "Duo Zone"** com memórias de Fortnite e sistema de presente surpresa.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-14+-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5+-blue?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3+-38B2AC?style=flat-square&logo=tailwind-css)
 
+---
+
+## ✨ Features
+
+### Área Pública
+- 🏠 Landing page elegante com tema dourado/preto/branco
+- 📸 Galeria de projetos com grid masonry
+- 🔄 Slider "Antes/Depois" para comparação de imagens
+- 📱 Design responsivo e animações suaves
+- 📧 Formulário de contato integrado com WhatsApp
+
+### Área Privada (Admin)
+- 🔐 Autenticação segura com NextAuth.js v5
+- 📊 Dashboard para gerenciamento
+- ✏️ CRUD completo de projetos
+- 🎨 Customização de aparência (cores, fontes, textos)
+- 🎮 **Duo Zone** - Galeria de memórias do Fortnite
+- 🎁 **Sistema de Presente** - Supply Drop com animação surpresa
+
+---
+
+## 🚀 Começando
+
+### Pré-requisitos
+- Node.js 18+
+- PostgreSQL (ou conta no Supabase/Neon)
+
+### Instalação
+
+1. **Clone o repositório**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <url-do-repo>
+cd projeto-arq
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Instale as dependências**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Configure as variáveis de ambiente**
+```bash
+cp .env.local.example .env.local
+# Edite o arquivo com suas credenciais
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Configure o banco de dados**
+```bash
+# Gerar cliente Prisma
+npm run db:generate
 
-## Learn More
+# Criar tabelas no banco
+npm run db:push
 
-To learn more about Next.js, take a look at the following resources:
+# Popular com dados iniciais
+npm run db:seed
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Inicie o servidor de desenvolvimento**
+```bash
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Acesse [http://localhost:3000](http://localhost:3000)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Estrutura do Projeto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── (public)/          # Rotas públicas
+│   │   ├── page.tsx       # Home
+│   │   ├── projetos/      # Galeria de projetos
+│   │   ├── sobre/         # Página sobre
+│   │   └── contato/       # Formulário de contato
+│   ├── (private)/         # Rotas protegidas
+│   │   ├── dashboard/     # Painel admin
+│   │   ├── admin/         # Gestão de projetos e aparência
+│   │   └── duo/           # Duo Zone + Presente
+│   ├── api/               # API Routes
+│   └── login/             # Página de login
+├── components/
+│   ├── ui/                # Componentes base (Button, Input, Card)
+│   └── layout/            # Navbar, Footer, AdminSidebar
+├── lib/
+│   ├── prisma.ts          # Cliente do Prisma
+│   ├── auth.ts            # Configuração NextAuth
+│   └── utils.ts           # Funções utilitárias
+└── types/                 # TypeScript types
+```
+
+---
+
+## 🎨 Design System
+
+### Paleta de Cores
+| Cor | Hex | Uso |
+|-----|-----|-----|
+| Gold | `#D4AF37` | Cor primária |
+| Black | `#0A0A0A` | Cor secundária |
+| White | `#FAFAFA` | Cor de destaque |
+
+### Tipografia
+- **Títulos:** Playfair Display
+- **Corpo:** Inter
+
+---
+
+## 🔐 Credenciais de Teste
+
+Após rodar o seed:
+- **Email:** matheus@archiduo.com
+- **Senha:** SenhaSegura123!
+
+---
+
+## 📝 Scripts Disponíveis
+
+```bash
+npm run dev          # Servidor de desenvolvimento
+npm run build        # Build de produção
+npm run start        # Iniciar produção
+npm run lint         # Verificar lint
+npm run db:generate  # Gerar cliente Prisma
+npm run db:push      # Sincronizar schema com banco
+npm run db:migrate   # Criar migration
+npm run db:seed      # Popular banco com dados iniciais
+npm run db:studio    # Abrir Prisma Studio
+```
+
+---
+
+## 🚀 Deploy
+
+### Vercel (Recomendado)
+
+1. Conecte o repositório no [Vercel](https://vercel.com)
+2. Configure as variáveis de ambiente
+3. Deploy automático a cada push
+
+### Banco de Dados
+
+Recomendamos:
+- [Supabase](https://supabase.com) - PostgreSQL + Storage gratuito
+- [Neon](https://neon.tech) - PostgreSQL serverless
+
+---
+
+## 💛 Feito com amor
+
+Este projeto é um presente especial. Cada linha de código foi escrita pensando em criar algo único e significativo.
+
+**GG, duo!** 🎮🏆

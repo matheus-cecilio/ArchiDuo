@@ -1,0 +1,129 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, User } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Projetos", href: "/projetos" },
+  { label: "Sobre", href: "/sobre" },
+  { label: "Contato", href: "/contato" },
+];
+
+interface NavbarProps {
+  siteName?: string;
+  isLoggedIn?: boolean;
+}
+
+export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--color-surface)]/90 backdrop-blur-md border-b border-[var(--color-border)]">
+      <nav className="container-custom">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-2xl font-bold font-[family-name:var(--font-playfair)] text-gradient-gold">
+              {siteName}
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "text-sm font-medium transition-colors duration-200 relative py-2",
+                  pathname === item.href
+                    ? "text-[var(--color-primary)]"
+                    : "text-[var(--color-text-secondary)] hover:text-[var(--color-primary)]"
+                )}
+              >
+                {item.label}
+                {pathname === item.href && (
+                  <motion.div
+                    layoutId="navbar-indicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--color-primary)]"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </Link>
+            ))}
+
+            {/* Login/Admin Button */}
+            {isLoggedIn ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-primary)] text-[var(--color-secondary)] text-sm font-medium hover:bg-[var(--color-primary-dark)] transition-all"
+              >
+                <User size={16} />
+                Admin
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
+              >
+                Login
+              </Link>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 text-[var(--color-text-primary)]"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="py-4 space-y-2">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "block px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                      pathname === item.href
+                        ? "bg-[var(--color-primary)] text-[var(--color-secondary)]"
+                        : "text-[var(--color-text-secondary)] hover:bg-[var(--color-accent-soft)]"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                <Link
+                  href={isLoggedIn ? "/dashboard" : "/login"}
+                  onClick={() => setIsOpen(false)}
+                  className="block px-4 py-3 rounded-lg text-sm font-medium text-[var(--color-primary)] border border-[var(--color-primary)]"
+                >
+                  {isLoggedIn ? "Admin" : "Login"}
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </header>
+  );
+}

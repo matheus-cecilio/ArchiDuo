@@ -1,0 +1,151 @@
+// ArchiDuo Portfolio - Schema do Banco de Dados
+// Site híbrido: Portfólio de Arquitetura + Duo Zone (Fortnite)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum Role {
+  ADMIN
+  VISITOR
+}
+
+// ============================================
+// AUTENTICAÇÃO - Usuários Admin (você + ela)
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String    // Hash bcrypt
+  image         String?   // Foto de perfil
+  role          Role      @default(ADMIN)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relação com presentes recebidos
+  giftsReceived Gift[]
+}
+
+// ============================================
+// ÁREA PROFISSIONAL - Projetos de Arquitetura
+// ============================================
+
+model Project {
+  id             String         @id @default(cuid())
+  title          String
+  slug           String         @unique // URL amigável: /projetos/casa-praia
+  description    String         @db.Text
+  clientName     String?
+  location       String?
+  area           String?        // Ex: "250m²"
+  year           String?        // Ex: "2024"
+  featured       Boolean        @default(false) // Destaque na home
+  
+  images         ProjectImage[]
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model ProjectImage {
+  id            String   @id @default(cuid())
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  url           String   // Imagem principal (ou "DEPOIS" tratada)
+  comparisonUrl String?  // Imagem "ANTES" para slider (opcional)
+  
+  caption       String?
+  order         Int      @default(0) // Ordenação na galeria
+
+  createdAt     DateTime @default(now())
+}
+
+// ============================================
+// ÁREA PRIVADA - Duo Zone (Fortnite)
+// ============================================
+
+model DuoMemory {
+  id          String    @id @default(cuid())
+  title       String    // Ex: "Vitória Royale 20 Kills"
+  description String?   // Ex: "Aquele dia que a safe fechou na água..."
+  
+  mediaUrl    String    // URL do print ou vídeo YouTube
+  mediaType   MediaType @default(IMAGE)
+  
+  matchDate   DateTime  // Data da partida
+  kills       Int?      // Kills da partida (opcional)
+  placement   String?   // Ex: "#1 Victory Royale"
+  
+  isHighlight Boolean   @default(false) // Destaque: melhor partida
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================
+// SURPRESA - Sistema de Presentes
+// ============================================
+
+model Gift {
+  id          String   @id @default(cuid())
+  title       String   // "Kindle Unlimited"
+  message     String   @db.Text // Mensagem fofa ao abrir
+  content     String   // Credenciais: "Login: xxx | Senha: xxx"
+  
+  isRevealed  Boolean  @default(false) // true quando ela abrir
+  revealedAt  DateTime?
+
+  recipientId String
+  recipient   User     @relation(fields: [recipientId], references: [id])
+
+  createdAt   DateTime @default(now())
+}
+
+// ============================================
+// CONFIGURAÇÕES - Customização Visual do Site
+// ============================================
+
+model SiteSettings {
+  id              String   @id @default(cuid())
+  
+  // Cores do tema
+  primaryColor    String   @default("#D4AF37")  // Dourado
+  secondaryColor  String   @default("#0A0A0A")  // Preto
+  accentColor     String   @default("#FAFAFA")  // Branco
+  
+  // Tipografia
+  fontFamily      String   @default("Playfair Display")
+  
+  // Hero Section
+  heroTitle       String   @default("Arquitetura & Design")
+  heroSubtitle    String?  @default("Transformando espaços em experiências")
+  
+  // Branding
+  siteName        String   @default("ArchiDuo")
+  logoUrl         String?
+  
+  // Contato
+  email           String?
+  phone           String?
+  instagram       String?
+  whatsapp        String?
+
+  updatedAt       DateTime @updatedAt
+}
