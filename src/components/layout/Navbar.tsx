@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Projetos", href: "/projetos" },
   { label: "Sobre", href: "/sobre" },
   { label: "Contato", href: "/contato" },
 ];
@@ -24,7 +23,7 @@ export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProp
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--color-surface)]/90 backdrop-blur-md border-b border-[var(--color-border)]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--color-secondary)]/95 backdrop-blur-md border-b border-[var(--color-primary)]/20">
       <nav className="container-custom">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -44,7 +43,7 @@ export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProp
                   "text-sm font-medium transition-colors duration-200 relative py-2",
                   pathname === item.href
                     ? "text-[var(--color-primary)]"
-                    : "text-[var(--color-text-secondary)] hover:text-[var(--color-primary)]"
+                    : "text-[var(--color-accent)]/80 hover:text-[var(--color-primary)]"
                 )}
               >
                 {item.label}
@@ -70,7 +69,7 @@ export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProp
             ) : (
               <Link
                 href="/login"
-                className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
+                className="text-sm font-medium text-[var(--color-accent)]/80 hover:text-[var(--color-primary)] transition-colors"
               >
                 Login
               </Link>
@@ -80,7 +79,7 @@ export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProp
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-[var(--color-text-primary)]"
+            className="md:hidden p-2 text-[var(--color-accent)]"
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -96,7 +95,7 @@ export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProp
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden overflow-hidden"
             >
-              <div className="py-4 space-y-2">
+              <div className="py-4 space-y-2 bg-[var(--color-secondary-light)] rounded-lg mt-2 p-2">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
@@ -106,7 +105,7 @@ export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProp
                       "block px-4 py-3 rounded-lg text-sm font-medium transition-colors",
                       pathname === item.href
                         ? "bg-[var(--color-primary)] text-[var(--color-secondary)]"
-                        : "text-[var(--color-text-secondary)] hover:bg-[var(--color-accent-soft)]"
+                        : "text-[var(--color-accent)]/80 hover:bg-[var(--color-secondary)] hover:text-[var(--color-primary)]"
                     )}
                   >
                     {item.label}
@@ -115,7 +114,7 @@ export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProp
                 <Link
                   href={isLoggedIn ? "/dashboard" : "/login"}
                   onClick={() => setIsOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-sm font-medium text-[var(--color-primary)] border border-[var(--color-primary)]"
+                  className="block px-4 py-3 rounded-lg text-sm font-medium text-[var(--color-primary)] border border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors"
                 >
                   {isLoggedIn ? "Admin" : "Login"}
                 </Link>

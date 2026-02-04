@@ -1,18 +1,32 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Sparkles, Award, Users } from "lucide-react";
-import { Button } from "@/components/ui";
+import { ArrowRight, Sparkles, Award, Users, X, ChevronRight } from "lucide-react";
+import { Button, AnimatedBackground } from "@/components/ui";
 
 export default function HomePage() {
+  const [expandedProject, setExpandedProject] = useState<number | null>(null);
+
+  useEffect(() => {
+    const onEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setExpandedProject(null);
+    };
+
+    window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, []);
+
   return (
     <>
+      {/* Animated Background */}
+      <AnimatedBackground />
+
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[var(--color-secondary)]">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+        {/* Background Pattern - now more subtle since we have animation */}
+        <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }} />
@@ -29,37 +43,33 @@ export default function HomePage() {
               transition={{ duration: 0.8 }}
             >
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--color-primary)]/30 bg-[var(--color-primary)]/10 mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8">
                 <Sparkles className="w-4 h-4 text-[var(--color-primary)]" />
                 <span className="text-sm text-[var(--color-primary)]">
                   Arquitetura & Design de Interiores
                 </span>
               </div>
 
+
               {/* Main Title */}
-              <h1 className="text-5xl md:text-7xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-accent)] mb-6 leading-tight">
-                Transformando{" "}
+              <h1 className="text-5xl md:text-7xl font-bold font-[family-name:var(--font-playfair)] mb-6 leading-tight">
+                <span className="text-white">Transformando</span>{" "}
                 <span className="text-gradient-gold">Espaços</span>
                 <br />
-                em Experiências
+                <span className="text-white">em</span>{" "}
+                <span className="text-gradient-gold">Experiências</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="text-lg md:text-xl text-[var(--color-text-muted)] mb-10 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
                 Criamos projetos arquitetônicos únicos que unem funcionalidade, 
                 estética e a essência de cada cliente.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/projetos">
-                  <Button size="lg" className="group">
-                    Ver Projetos
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <Link href="/contato">
-                  <Button variant="secondary" size="lg">
+                  <Button size="lg" className="min-w-[180px]">
                     Fale Conosco
                   </Button>
                 </Link>
@@ -67,28 +77,16 @@ export default function HomePage() {
             </motion.div>
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="w-6 h-10 rounded-full border-2 border-[var(--color-primary)] flex justify-center pt-2">
-            <div className="w-1.5 h-3 rounded-full bg-[var(--color-primary)]" />
-          </div>
-        </motion.div>
       </section>
 
       {/* Stats Section */}
       <section className="py-16 bg-[var(--color-surface)] border-b border-[var(--color-border)]">
         <div className="container-custom">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {[
               { number: "50+", label: "Projetos Realizados" },
               { number: "8", label: "Anos de Experiência" },
               { number: "100%", label: "Clientes Satisfeitos" },
-              { number: "15", label: "Prêmios de Design" },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -118,150 +116,325 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="flex flex-col items-center justify-center text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)] mb-4">
               Projetos em <span className="text-gradient-gold">Destaque</span>
             </h2>
-            <p className="text-[var(--color-text-muted)] max-w-2xl mx-auto">
-              Conheça alguns dos nossos trabalhos mais recentes e inspire-se 
-              para transformar o seu espaço.
+            <p className="text-[var(--color-text-muted)] max-w-2xl text-center leading-relaxed">
+              Conheça alguns dos nossos trabalhos mais recentes e inspire-se para transformar o seu espaço.
             </p>
           </motion.div>
 
           {/* Projects Grid - Placeholder */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item, index) => (
-              <motion.div
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((item, index) => (
+              <motion.button
                 key={item}
+                type="button"
+                onClick={() => setExpandedProject(item)}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
                 viewport={{ once: true }}
-                className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-[var(--color-secondary-light)] cursor-pointer"
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-[var(--color-primary)]/25 bg-[var(--color-secondary-light)] shadow-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-black"
+                aria-label="Ver projeto em destaque"
               >
-                {/* Placeholder for project image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-secondary)]" />
-                
-                {/* Overlay on hover */}
-                <div className="absolute inset-0 bg-[var(--color-secondary)]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <h3 className="text-xl font-bold text-[var(--color-accent)] font-[family-name:var(--font-playfair)] mb-2">
-                      Projeto {item}
-                    </h3>
-                    <p className="text-sm text-[var(--color-text-muted)] mb-4">
-                      Residencial • 250m²
-                    </p>
-                    <span className="text-[var(--color-primary)] text-sm font-medium flex items-center justify-center gap-2">
-                      Ver Projeto <ArrowRight size={16} />
-                    </span>
-                  </div>
+                {/* Placeholder animado (fica bonito mesmo sem imagem real) */}
+                <motion.div
+                  className="absolute inset-0 pointer-events-none"
+                  initial={{ backgroundPosition: "0% 50%" }}
+                  animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+                  transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(130deg, rgba(212,175,55,0.22) 0%, rgba(26,26,26,0.98) 42%, rgba(0,0,0,1) 80%, rgba(212,175,55,0.16) 100%)",
+                    backgroundSize: "220% 220%",
+                  }}
+                />
+
+                <motion.div
+                  className="absolute inset-0 pointer-events-none opacity-80"
+                  initial={{ x: "-120%" }}
+                  animate={{ x: ["-120%", "130%"] }}
+                  transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 2.2, ease: "easeInOut" }}
+                  style={{
+                    background:
+                      "linear-gradient(115deg, transparent 35%, rgba(245,230,200,0.18) 50%, transparent 65%)",
+                  }}
+                />
+
+                {/* Vinheta para dar profundidade */}
+                <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(120%_120%_at_50%_20%,rgba(212,175,55,0.06)_0%,rgba(0,0,0,0.55)_60%,rgba(0,0,0,0.85)_100%)]" />
+
+                {/* Tag discreta */}
+                <div className="absolute top-4 left-4 z-10 rounded-full border border-[var(--color-primary)]/40 bg-black/45 px-3 py-1 text-xs tracking-[0.18em] uppercase text-[var(--color-primary-light)]">
+                  Imagem em breve
                 </div>
 
-                {/* Gold border on hover */}
-                <div className="absolute inset-0 border-2 border-transparent group-hover:border-[var(--color-primary)] rounded-xl transition-colors duration-300" />
-              </motion.div>
+                {/* Camada hover */}
+                <div className="absolute inset-0 pointer-events-none bg-[var(--color-secondary)]/0 group-hover:bg-[var(--color-secondary)]/20 transition-colors duration-300" />
+
+                {/* Borda dourada no hover */}
+                <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-transparent group-hover:border-[var(--color-primary)] transition-colors duration-300" />
+              </motion.button>
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <Link href="/projetos">
-              <Button variant="secondary">
-                Ver Todos os Projetos
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-          </div>
+
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="section-padding bg-[var(--color-secondary)]">
-        <div className="container-custom">
+      <section className="py-28 relative bg-[#0A0A0A] overflow-hidden">
+        {/* Background Elements - Arquitetura */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-1/4 left-10 w-64 h-64 border border-white/10 rounded-full"></div>
+          <div className="absolute bottom-1/4 right-10 w-96 h-96 border border-white/5 rounded-full"></div>
+          <div className="absolute top-40 right-1/3 w-32 h-px bg-gradient-to-r from-transparent via-white to-transparent transform rotate-45"></div>
+          <div className="absolute bottom-40 left-1/3 w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent transform -rotate-45"></div>
+        </div>
+
+        {/* Decorative Architectural Grid */}
+        <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 opacity-5 pointer-events-none">
+          {Array.from({ length: 144 }).map((_, i) => (
+            <div key={i} className="border border-white/5"></div>
+          ))}
+        </div>
+
+        {/* Title Container */}
+        <div className="text-center mb-20 px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="inline-block mb-6"
           >
-            <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-accent)] mb-4">
-              Nossos <span className="text-gradient-gold">Serviços</span>
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="w-12 h-px bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent"></div>
+              <div className="text-[var(--color-primary)] font-light tracking-widest text-sm uppercase">
+                Nossas Especialidades
+              </div>
+              <div className="w-12 h-px bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent"></div>
+            </div>
+            
+            <h2 className="text-5xl md:text-6xl font-bold font-[family-name:var(--font-playfair)] !text-white mb-4">
+              Serviços <span className="text-gradient-gold">Exclusivos</span>
             </h2>
-            <p className="text-[var(--color-text-muted)] max-w-2xl mx-auto">
-              Oferecemos soluções completas em arquitetura e design de interiores.
+            
+            <p className="text-gray-300 text-xl max-w-2xl mx-auto leading-relaxed">
+              Transformamos suas ideias em espaços funcionais e esteticamente 
+              impressionantes, com atenção aos mínimos detalhes.
             </p>
           </motion.div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Award className="w-8 h-8" />,
-                title: "Projeto Arquitetônico",
-                description: "Desenvolvimento completo do projeto, do conceito à execução.",
-              },
-              {
-                icon: <Sparkles className="w-8 h-8" />,
-                title: "Design de Interiores",
-                description: "Ambientes funcionais e esteticamente harmoniosos.",
-              },
-              {
-                icon: <Users className="w-8 h-8" />,
-                title: "Consultoria",
-                description: "Orientação especializada para seu projeto ou reforma.",
-              },
-            ].map((service, index) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                viewport={{ once: true }}
-                className="p-8 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-secondary-light)] hover:border-[var(--color-primary)] transition-colors duration-300 group"
-              >
-                <div className="w-16 h-16 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] mb-6 group-hover:bg-[var(--color-primary)] group-hover:text-[var(--color-secondary)] transition-colors duration-300">
-                  {service.icon}
+        {/* Cards Container - Centered */}
+        <div className="container-custom relative z-10">
+          <div className="flex flex-col lg:flex-row gap-8 justify-center items-center">
+            {/* Card 1 - Arquitetura */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -8,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#111111] to-[#0a0a0a] border border-[#2a2a2a] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
+            >
+              {/* Card Background Pattern */}
+              <div className="absolute inset-0 opacity-20"></div>
+              
+              {/* Gold accent line */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <div className="p-8 relative">
+                {/* Icon and Title with Creative Layout */}
+                <div className="flex items-start gap-6 mb-6">
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-[#2a2a2a] flex items-center justify-center flex-shrink-0 group-hover:border-[var(--color-primary)]/40 transition-all duration-500">
+                      <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[var(--color-primary)] to-amber-700 flex items-center justify-center shadow-lg">
+                        <Award className="w-5 h-5 text-black" />
+                      </div>
+                    </div>
+                    <div className="absolute -inset-2 bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold font-[family-name:var(--font-playfair)] !text-white mb-2">
+                      Arquitetura
+                    </h3>
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-amber-600 mb-3"></div>
+                    <p className="text-gray-300 text-sm">
+                      Projetos residenciais e comerciais
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold font-[family-name:var(--font-playfair)] text-[var(--color-accent)] mb-3">
-                  {service.title}
-                </h3>
-                <p className="text-[var(--color-text-muted)] text-sm leading-relaxed">
-                  {service.description}
+                
+                {/* Description */}
+                <p className="text-gray-400 leading-relaxed mb-8 group-hover:text-gray-300 transition-colors duration-300">
+                  Criamos projetos arquitetônicos que unem estética, funcionalidade e sustentabilidade, 
+                  atendendo às necessidades específicas de cada cliente e transformando conceitos em 
+                  espaços tangíveis e inspiradores.
                 </p>
-              </motion.div>
-            ))}
+                
+                {/* Features List */}
+                <ul className="space-y-3 mb-8">
+                  {['Projetos residenciais personalizados', 'Aprovações legais e regulatórias', 'Gestão de obra'].map((item, index) => (
+                    <motion.li 
+                      key={index}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 * index }}
+                      viewport={{ once: true }}
+                      className="flex items-center gap-3 text-gray-400 group-hover:text-gray-300 transition-colors duration-300"
+                    >
+                      <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]"></div>
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+
+            {/* Card 2 - Design de Interiores */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -8,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#111111] to-[#0a0a0a] border border-[#2a2a2a] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
+            >
+              {/* Card Background Pattern */}
+              <div className="absolute inset-0 opacity-20"></div>
+              
+              {/* Gold accent line */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <div className="p-8 relative">
+                {/* Icon and Title with Creative Layout */}
+                <div className="flex items-start gap-6 mb-6">
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-[#2a2a2a] flex items-center justify-center flex-shrink-0 group-hover:border-[var(--color-primary)]/40 transition-all duration-500">
+                      <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[var(--color-primary)] to-amber-700 flex items-center justify-center shadow-lg">
+                        <Users className="w-5 h-5 text-black" />
+                      </div>
+                    </div>
+                    <div className="absolute -inset-2 bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold font-[family-name:var(--font-playfair)] !text-white mb-2">
+                      Design de Interiores
+                    </h3>
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-amber-600 mb-3"></div>
+                    <p className="text-gray-300 text-sm">
+                      Ambientes personalizados e funcionais
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Description */}
+                <p className="text-gray-400 leading-relaxed mb-8 group-hover:text-gray-300 transition-colors duration-300">
+                  Desenvolvemos ambientes que refletem sua personalidade e estilo de vida, 
+                  combinando estética, conforto e funcionalidade através da seleção criteriosa 
+                  de materiais, mobiliário, iluminação e elementos decorativos.
+                </p>
+                
+                {/* Features List */}
+                <ul className="space-y-3 mb-8">
+                  {['Projeto de ambientes residenciais', 'Design comercial e corporativo', 'Especificação de materiais', 'Iluminação e mobiliário'].map((item, index) => (
+                    <motion.li 
+                      key={index}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 * index }}
+                      viewport={{ once: true }}
+                      className="flex items-center gap-3 text-gray-400 group-hover:text-gray-300 transition-colors duration-300"
+                    >
+                      <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]"></div>
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
           </div>
         </div>
+
+        {/* Decorative bottom elements */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-primary)]/20 to-transparent"></div>
+        <div className="absolute -bottom-10 left-1/4 w-48 h-20 bg-gradient-to-r from-[var(--color-primary)]/5 to-transparent -skew-y-6 blur-3xl"></div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)]">
-        <div className="container-custom text-center">
+      <AnimatePresence>
+        {expandedProject && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setExpandedProject(null)}
+            className="fixed inset-0 z-50 bg-black/85 p-4 md:p-8 flex items-center justify-center"
           >
-            <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-secondary)] mb-6">
-              Pronto para transformar seu espaço?
-            </h2>
-            <p className="text-[var(--color-secondary)]/80 mb-8 max-w-xl mx-auto">
-              Entre em contato e vamos conversar sobre como podemos 
-              criar o projeto dos seus sonhos.
-            </p>
-            <Link href="/contato">
-              <Button 
-                size="lg" 
-                className="bg-[var(--color-secondary)] text-[var(--color-primary)] hover:bg-[var(--color-secondary)]/90"
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={(event) => event.stopPropagation()}
+              className="relative w-full max-w-5xl aspect-[16/10] rounded-2xl overflow-hidden border border-[var(--color-primary)]/40 shadow-2xl"
+            >
+              <motion.div
+                className="absolute inset-0"
+                initial={{ backgroundPosition: "0% 50%" }}
+                animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                style={{
+                  backgroundImage:
+                    "linear-gradient(130deg, rgba(212,175,55,0.25) 0%, rgba(26,26,26,0.98) 40%, rgba(0,0,0,1) 80%, rgba(212,175,55,0.18) 100%)",
+                  backgroundSize: "220% 220%",
+                }}
+              />
+
+              <motion.div
+                className="absolute inset-0"
+                initial={{ x: "-120%" }}
+                animate={{ x: ["-120%", "130%"] }}
+                transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }}
+                style={{
+                  background:
+                    "linear-gradient(115deg, transparent 35%, rgba(245,230,200,0.2) 50%, transparent 65%)",
+                }}
+              />
+
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-lg uppercase tracking-[0.2em] text-[var(--color-primary-light)]">
+                  Em breve
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setExpandedProject(null)}
+                className="absolute top-4 right-4 rounded-full border border-[var(--color-primary)]/50 bg-black/60 p-2 text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-black transition-colors"
+                aria-label="Fechar visualizacao do projeto"
               >
-                Iniciar Conversa
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
+                <X className="w-4 h-4" />
+              </button>
+            </motion.div>
           </motion.div>
-        </div>
-      </section>
+        )}
+      </AnimatePresence>
+
+      
     </>
   );
 }
