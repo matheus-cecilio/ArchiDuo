@@ -9,13 +9,13 @@ import { Button, AnimatedBackground } from "@/components/ui";
 
 const PROJECTS = [
   { src: "/projects/img-boa1.png", alt: "Projeto 1" },
-  { src: "/projects/img-boa2-v2.png", alt: "Projeto 2" },
+  { src: "/projects/img-boa2.png", alt: "Projeto 2" },
   { src: "/projects/img-boa3.png", alt: "Projeto 3" },
   { src: "/projects/img-boa4.png", alt: "Projeto 4" },
   { src: "/projects/img-boa5.png", alt: "Projeto 5" },
   { src: "/projects/img-boa6.png", alt: "Projeto 6" },
   { src: "/projects/img-boa7.png", alt: "Projeto 7" },
-  { src: "/projects/img-boa8.png", alt: "Projeto 8" },
+  { src: "/projects/img-boa8.png", alt: "Projeto 8" },  
   { src: "/projects/img-boa9.png", alt: "Projeto 9" },
   { src: "/projects/img-boa10.png", alt: "Projeto 10" },
   { src: "/projects/img-boa11.png", alt: "Projeto 11" },

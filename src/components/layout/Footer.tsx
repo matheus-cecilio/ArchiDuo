@@ -60,7 +60,7 @@ export function Footer({
           {/* Copyright */}
           <div className="text-[var(--color-accent)]/40 text-xs flex flex-col gap-1">
             <p>© {currentYear} {siteName}. Todos os direitos reservados.</p>
-            <p>Desenvolvido com ❤️ por matmata_</p>
+            <p>Desenvolvido por @matheus.cb8</p>
           </div>
 
         </div>

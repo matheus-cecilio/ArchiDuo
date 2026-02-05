@@ -101,7 +101,7 @@ export default function NovoProjetoPage() {
               <div className="space-y-5">
                 <Input
                   label="Título do Projeto *"
-                  placeholder="Ex: Casa Moderna em São Paulo"
+                  placeholder="Ex: Apartamento Moderno em Santa Catarina"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
@@ -125,7 +125,7 @@ export default function NovoProjetoPage() {
                   />
                   <Input
                     label="Localização"
-                    placeholder="Ex: São Paulo, SP"
+                    placeholder="Ex: Santa Catarina, SC"
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   />
