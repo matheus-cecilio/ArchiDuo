@@ -3,8 +3,27 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Sparkles, Award, Users, X, ChevronRight } from "lucide-react";
 import { Button, AnimatedBackground } from "@/components/ui";
+
+const PROJECTS = [
+  { src: "/projects/img-boa1.png", alt: "Projeto 1" },
+  { src: "/projects/img-boa2-v2.png", alt: "Projeto 2" },
+  { src: "/projects/img-boa3.png", alt: "Projeto 3" },
+  { src: "/projects/img-boa4.png", alt: "Projeto 4" },
+  { src: "/projects/img-boa5.png", alt: "Projeto 5" },
+  { src: "/projects/img-boa6.png", alt: "Projeto 6" },
+  { src: "/projects/img-boa7.png", alt: "Projeto 7" },
+  { src: "/projects/img-boa8.png", alt: "Projeto 8" },
+  { src: "/projects/img-boa9.png", alt: "Projeto 9" },
+  { src: "/projects/img-boa10.png", alt: "Projeto 10" },
+  { src: "/projects/img-boa11.png", alt: "Projeto 11" },
+  { src: "/projects/img-boa12.png", alt: "Projeto 12" },
+  { src: "/projects/img-boa13.jpg", alt: "Projeto 13" },
+  { src: "/projects/img-boa14.png", alt: "Projeto 14" },
+  { src: "/projects/img-boa15.png", alt: "Projeto 15" },
+];
 
 export default function HomePage() {
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
@@ -84,7 +103,7 @@ export default function HomePage() {
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {[
-              { number: "50+", label: "Projetos Realizados" },
+              { number: "5+", label: "Grandes Projetos Realizados" },
               { number: "8", label: "Anos de Experiência" },
               { number: "100%", label: "Clientes Satisfeitos" },
             ].map((stat, index) => (
@@ -97,8 +116,8 @@ export default function HomePage() {
                 className="text-center"
               >
                 <div className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-playfair)] text-gradient-gold mb-2">
-                  {stat.number}
-                </div>
+  {stat.number}
+</div>
                 <div className="text-sm text-[var(--color-text-muted)]">
                   {stat.label}
                 </div>
@@ -128,50 +147,30 @@ export default function HomePage() {
 
           {/* Projects Grid - Placeholder */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((item, index) => (
+            {PROJECTS.map((project, index) => (
               <motion.button
-                key={item}
+                key={project.src}
                 type="button"
-                onClick={() => setExpandedProject(item)}
+                onClick={() => setExpandedProject(index)}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -8, scale: 1.02 }}
                 className="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-[var(--color-primary)]/25 bg-[var(--color-secondary-light)] shadow-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-black"
-                aria-label="Ver projeto em destaque"
+                aria-label={`Ver ${project.alt}`}
               >
-                {/* Placeholder animado (fica bonito mesmo sem imagem real) */}
-                <motion.div
-                  className="absolute inset-0 pointer-events-none"
-                  initial={{ backgroundPosition: "0% 50%" }}
-                  animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-                  transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(130deg, rgba(212,175,55,0.22) 0%, rgba(26,26,26,0.98) 42%, rgba(0,0,0,1) 80%, rgba(212,175,55,0.16) 100%)",
-                    backgroundSize: "220% 220%",
-                  }}
-                />
-
-                <motion.div
-                  className="absolute inset-0 pointer-events-none opacity-80"
-                  initial={{ x: "-120%" }}
-                  animate={{ x: ["-120%", "130%"] }}
-                  transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 2.2, ease: "easeInOut" }}
-                  style={{
-                    background:
-                      "linear-gradient(115deg, transparent 35%, rgba(245,230,200,0.18) 50%, transparent 65%)",
-                  }}
+                <Image
+                  src={project.src}
+                  alt={project.alt}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover"
+                  priority={index < 3}
                 />
 
                 {/* Vinheta para dar profundidade */}
-                <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(120%_120%_at_50%_20%,rgba(212,175,55,0.06)_0%,rgba(0,0,0,0.55)_60%,rgba(0,0,0,0.85)_100%)]" />
-
-                {/* Tag discreta */}
-                <div className="absolute top-4 left-4 z-10 rounded-full border border-[var(--color-primary)]/40 bg-black/45 px-3 py-1 text-xs tracking-[0.18em] uppercase text-[var(--color-primary-light)]">
-                  Imagem em breve
-                </div>
+                <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(120%_120%_at_50%_20%,rgba(212,175,55,0.06)_0%,rgba(0,0,0,0.25)_60%,rgba(0,0,0,0.6)_100%)]" />
 
                 {/* Camada hover */}
                 <div className="absolute inset-0 pointer-events-none bg-[var(--color-secondary)]/0 group-hover:bg-[var(--color-secondary)]/20 transition-colors duration-300" />
@@ -233,7 +232,7 @@ export default function HomePage() {
 
         {/* Cards Container - Centered */}
         <div className="container-custom relative z-10">
-          <div className="flex flex-col lg:flex-row gap-8 justify-center items-center">
+          <div className="flex flex-col lg:flex-row gap-8 justify-center lg:items-stretch">
             {/* Card 1 - Arquitetura */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -252,7 +251,7 @@ export default function HomePage() {
               {/* Gold accent line */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
-              <div className="p-8 relative">
+              <div className="p-10 relative">
                 {/* Icon and Title with Creative Layout */}
                 <div className="flex items-start gap-6 mb-6">
                   <div className="relative">
@@ -276,14 +275,14 @@ export default function HomePage() {
                 </div>
                 
                 {/* Description */}
-                <p className="text-gray-400 leading-relaxed mb-8 group-hover:text-gray-300 transition-colors duration-300">
+                <p className="text-gray-400 leading-relaxed mb-6 text-justify group-hover:text-gray-300 transition-colors duration-300">
                   Criamos projetos arquitetônicos que unem estética, funcionalidade e sustentabilidade, 
                   atendendo às necessidades específicas de cada cliente e transformando conceitos em 
                   espaços tangíveis e inspiradores.
                 </p>
                 
                 {/* Features List */}
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-2">
                   {['Projetos residenciais personalizados', 'Aprovações legais e regulatórias', 'Gestão de obra'].map((item, index) => (
                     <motion.li 
                       key={index}
@@ -319,7 +318,7 @@ export default function HomePage() {
               {/* Gold accent line */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
-              <div className="p-8 relative">
+              <div className="p-10 relative">
                 {/* Icon and Title with Creative Layout */}
                 <div className="flex items-start gap-6 mb-6">
                   <div className="relative">
@@ -343,15 +342,15 @@ export default function HomePage() {
                 </div>
                 
                 {/* Description */}
-                <p className="text-gray-400 leading-relaxed mb-8 group-hover:text-gray-300 transition-colors duration-300">
+                <p className="text-gray-400 leading-relaxed mb-6 text-justify group-hover:text-gray-300 transition-colors duration-300">
                   Desenvolvemos ambientes que refletem sua personalidade e estilo de vida, 
                   combinando estética, conforto e funcionalidade através da seleção criteriosa 
                   de materiais, mobiliário, iluminação e elementos decorativos.
                 </p>
                 
                 {/* Features List */}
-                <ul className="space-y-3 mb-8">
-                  {['Projeto de ambientes residenciais', 'Design comercial e corporativo', 'Especificação de materiais', 'Iluminação e mobiliário'].map((item, index) => (
+                <ul className="space-y-3 mb-2">
+                  {['Projeto de ambientes residenciais', 'Design comercial e corporativo', 'Iluminação e mobiliário'].map((item, index) => (
                     <motion.li 
                       key={index}
                       initial={{ opacity: 0, x: -10 }}
@@ -376,7 +375,7 @@ export default function HomePage() {
       </section>
 
       <AnimatePresence>
-        {expandedProject && (
+        {expandedProject !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -390,36 +389,28 @@ export default function HomePage() {
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.25 }}
               onClick={(event) => event.stopPropagation()}
-              className="relative w-full max-w-5xl aspect-[16/10] rounded-2xl overflow-hidden border border-[var(--color-primary)]/40 shadow-2xl"
+              className="relative w-full max-w-5xl aspect-[16/10] rounded-2xl overflow-hidden border border-[var(--color-primary)]/40 shadow-2xl bg-black"
             >
-              <motion.div
-                className="absolute inset-0"
-                initial={{ backgroundPosition: "0% 50%" }}
-                animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                style={{
-                  backgroundImage:
-                    "linear-gradient(130deg, rgba(212,175,55,0.25) 0%, rgba(26,26,26,0.98) 40%, rgba(0,0,0,1) 80%, rgba(212,175,55,0.18) 100%)",
-                  backgroundSize: "220% 220%",
-                }}
+              <Image
+                src={PROJECTS[expandedProject].src}
+                alt={PROJECTS[expandedProject].alt}
+                fill
+                sizes="100vw"
+                className="object-contain"
+                priority
               />
 
+              {/* Brilho sutil sobre a imagem expandida */}
               <motion.div
-                className="absolute inset-0"
+                className="absolute inset-0 pointer-events-none opacity-80"
                 initial={{ x: "-120%" }}
                 animate={{ x: ["-120%", "130%"] }}
                 transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }}
                 style={{
                   background:
-                    "linear-gradient(115deg, transparent 35%, rgba(245,230,200,0.2) 50%, transparent 65%)",
+                    "linear-gradient(115deg, transparent 35%, rgba(245,230,200,0.25) 50%, transparent 65%)",
                 }}
               />
-
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-lg uppercase tracking-[0.2em] text-[var(--color-primary-light)]">
-                  Em breve
-                </span>
-              </div>
 
               <button
                 type="button"

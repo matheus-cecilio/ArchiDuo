@@ -106,9 +106,10 @@
    Base Styles
    ============================================ */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
 }
 
@@ -288,4 +289,18 @@ h4 { font-size: 1.25rem; }
 ::selection {
   background: var(--color-primary);
   color: var(--color-secondary);
+}
+
+
+
+.text-gradient-gold {
+  background: linear-gradient(
+    135deg,
+    #f5e7b2 0%,
+    #d4af37 40%,
+    #b8962e 60%,
+    #f5e7b2 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

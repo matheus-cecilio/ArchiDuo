@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { 
-  Instagram
-} from "lucide-react";
+import { Instagram } from "lucide-react";
 
 interface FooterProps {
   siteName?: string;
@@ -23,48 +21,48 @@ export function Footer({
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-[var(--color-secondary)] overflow-hidden">
+    <footer className="bg-[var(--color-secondary)]">
+      {/* wrapper que CENTRALIZA tudo */}
+      <div className="flex justify-center px-4 py-16 lg:py-20">
+        {/* bloco central real */}
+        <div className="w-full max-w-7xl flex flex-col items-center gap-8 text-center">
 
-      {/* Main Footer Content */}
-      <div className="relative min-h-[15vh] flex items-center justify-center py-24 lg:py-32">
-        <div className="w-full px-4">
-          <div className="flex flex-col items-center justify-center text-center space-y-10 mx-auto">
-            
-            {/* Links de navegação */}
-            <div className="grid grid-cols-3 gap-6 w-full max-w-md mx-auto text-center">
+          {/* NAV */}
+          <nav className="w-full max-w-md">
+            <ul className="grid grid-cols-3 items-center list-none p-0 m-0">
               {quickLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-[var(--color-accent)]/60 hover:text-[var(--color-primary)] transition-colors duration-300 text-base"
-                >
-                  {link.label}
-                </Link>
+                <li key={link.href} className="text-center">
+                  <Link
+                    href={link.href}
+                    className="text-[var(--color-accent)]/60 hover:text-[var(--color-primary)] transition-colors text-base"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
+          </nav>
 
-            {/* Linha divisória */}
-            <div className="w-full max-w-md h-px bg-[var(--color-accent)]/10 my-8 mx-auto" />
+          {/* Divider */}
+          <div className="w-full max-w-md h-px bg-[var(--color-accent)]/10" />
 
-            {/* Instagram */}
-            <a
-              href={`https://instagram.com/${instagram}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex flex-col items-center justify-center gap-1 text-[var(--color-accent)]/60 hover:text-[var(--color-primary)] transition-colors text-base leading-none"
-            >
-              <Instagram size={18} className="shrink-0" />
-              <span>@{instagram}</span>
-            </a>
+          {/* Instagram */}
+          <a
+            href={`https://instagram.com/${instagram}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex flex-col items-center gap-2 text-[var(--color-accent)]/60 hover:text-[var(--color-primary)] transition-colors text-base"
+          >
+            <Instagram size={18} />
+            <span>@{instagram}</span>
+          </a>
 
-
-            {/* Copyright */}
-            <div className="text-[var(--color-accent)]/40 text-xs space-y-2">
-              <p>© {currentYear} {siteName}. Todos os direitos reservados.</p>
-              <p>Desenvolvido com ❤️ por {siteName}</p>
-            </div>
-
+          {/* Copyright */}
+          <div className="text-[var(--color-accent)]/40 text-xs flex flex-col gap-1">
+            <p>© {currentYear} {siteName}. Todos os direitos reservados.</p>
+            <p>Desenvolvido com ❤️ por matmata_</p>
           </div>
+
         </div>
       </div>
     </footer>
