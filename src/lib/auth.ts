@@ -12,6 +12,7 @@ const ALLOWED_EMAILS = [
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",
   },

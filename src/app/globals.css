@@ -11,10 +11,11 @@
   /* Cores Primárias (customizáveis via banco) */
   --color-primary: #D4AF37;
   /* Dourado */
-  --color-primary-light: #F5E6C8;
+  --color-primary-light: #FFD700;
   /* Dourado claro */
   --color-primary-dark: #B8962E;
   /* Dourado escuro */
+  --color-primary-softer: #FCD34D;
 
   --color-secondary: #0A0A0A;
   /* Preto */

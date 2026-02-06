@@ -49,7 +49,7 @@ export default function LoginPage() {
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }} />
       </div>
 
@@ -75,12 +75,9 @@ export default function LoginPage() {
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center">
               <Lock className="w-8 h-8 text-[var(--color-primary)]" />
             </div>
-            <h1 className="text-2xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)]">
-              Área Restrita
-            </h1>
-            <p className="text-[var(--color-text-muted)] text-sm mt-2">
-              Acesso exclusivo para administradores
-            </p>
+            <h3 className="text-xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)]">
+              Login
+            </h3>
           </div>
 
           {/* Error Message */}
@@ -125,7 +122,7 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <Button type="submit" size="lg" isLoading={isLoading} className="w-full">
+            <Button type="submit" size="lg" isLoading={isLoading} className="w-full bg-[var(--color-primary-softer)] hover:bg-[var(--color-primary-light)]">
               Entrar
             </Button>
           </form>

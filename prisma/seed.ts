@@ -17,7 +17,7 @@ async function main() {
   console.log("🗑️  Dados existentes removidos\n");
 
   // Criar usuários admin
-  const passwordHash = await bcrypt.hash("SenhaSegura123!", 10);
+  const passwordHash = await bcrypt.hash("senhasegura123", 10);
 
   const matheus = await prisma.user.create({
     data: {
@@ -114,7 +114,7 @@ Seu duo favorito 🏆`,
   console.log("\n📋 Credenciais de acesso:");
   console.log("   Email: matheus@archiduo.com");
   console.log("   Email: arquiteta@archiduo.com");
-  console.log("   Senha: DuoFortnite@123");
+  console.log("   Senha: ********** (verifique as variáveis de ambiente)");
 }
 
 main()

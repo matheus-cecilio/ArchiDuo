@@ -177,8 +177,8 @@ export default function SobrePage() {
                     initial={{ opacity: 0, y: 15, filter: "blur(8px)" }}
                     whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     transition={{
-                      duration: 0.4,
-                      delay: i * 0.05,
+                      duration: 1,
+                      delay: i * 0.1,
                       ease: "easeOut"
                     }}
                     viewport={{ once: true, margin: "-50px" }}
@@ -276,27 +276,19 @@ export default function SobrePage() {
 
                 {/* Ícone que "acende" no hover */}
                 <div
-                  className="relative w-16 h-16 rounded-2xl bg-[#0d0d0d] border border-gray-800 flex items-center justify-center mb-6 overflow-hidden transition-all duration-500 group-hover:border-[var(--color-primary)]/40"
+                  className="relative w-16 h-16 rounded-2xl bg-[#0d0d0d] border flex items-center justify-center mb-6 overflow-hidden transition-all duration-100 group-hover:border-[var(--color-primary)]/0"
                 >
                   {/* Glow de fundo - aparece no hover (lâmpada acendendo) */}
                   <div
-                    className="absolute inset-0 bg-[var(--color-primary)]/0 group-hover:bg-[var(--color-primary)]/25 rounded-2xl transition-all duration-500"
+                    className="absolute inset-0 bg-[var(--color-primary)]/0 group-hover:bg-[var(--color-primary)]/25 rounded-2xl transition-all duration-100"
                   />
-
-                  {/* Ícone - começa apagado (cinza claro), acende no hover (dourado) */}
                   <div
-                    className="relative z-10 text-yellow-400 group-hover:text-[var(--color-primary)] transition-all duration-500"
-                    style={{
-                      filter: "drop-shadow(0 0 0px transparent)",
-                    }}
+                    className="relative z-10 text-yellow-500 group-hover:text-yellow transition-all duration-100"
                   >
-                    <div className="group-hover:[filter:drop-shadow(0_0_10px_rgba(212,175,55,0.7))] transition-all duration-500">
-                      {item.icon}
-                    </div>
+                    {item.icon}
                   </div>
 
-                  {/* Reflexo sutil */}
-                  <div className="absolute top-1 left-1 w-2 h-2 bg-white/5 group-hover:bg-white/15 rounded-full blur-sm transition-all duration-500" />
+                  
                 </div>
 
                 {/* Título */}

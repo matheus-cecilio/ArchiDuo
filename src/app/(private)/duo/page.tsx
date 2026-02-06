@@ -1,18 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { 
-  Trophy, 
-  Gamepad2, 
-  Upload, 
-  Play, 
-  Calendar,
+import {
+  Trophy,
+  Gamepad2,
+  Upload,
   Target,
-  Crown,
   Sparkles,
-  Plus
+  Plus,
+  Crown
 } from "lucide-react";
 import { Button, Card } from "@/components/ui";
 
@@ -20,53 +18,44 @@ import { Button, Card } from "@/components/ui";
 const mockMemories = [
   {
     id: "1",
-    title: "Victory Royale - 15 Kills",
-    description: "Aquela partida insana onde ganhamos com a storm fechando!",
+    title: "Modo Trocação - Duo - 1",
     mediaUrl: "/placeholder.jpg",
     mediaType: "IMAGE" as const,
-    matchDate: "2024-01-28",
-    kills: 15,
     placement: "#1 Victory Royale",
-    isHighlight: false,
   },
   {
     id: "2",
-    title: "Duo Win com Sniper",
-    description: "Só de sniper nessa, foi lindo demais!",
+    title: "Modo Trocação - Duo - 2",
     mediaUrl: "/placeholder.jpg",
     mediaType: "IMAGE" as const,
-    matchDate: "2024-01-25",
-    kills: 12,
-    placement: "#1 Victory Royale",
-    isHighlight: false,
-  },
-  {
-    id: "3",
-    title: "Nossa Melhor Partida! 🏆",
-    description: "A partida mais épica que jogamos juntos. Replay salvo para sempre!",
-    mediaUrl: "https://www.youtube.com/watch?v=XXXXX", // Substituir pelo link real
-    mediaType: "VIDEO" as const,
-    matchDate: "2024-01-20",
-    kills: 22,
-    placement: "#1 Victory Royale",
-    isHighlight: true,
+    placement: "#2 Victory Royale",
   },
 ];
 
-// Estatísticas do duo
-const duoStats = {
-  totalWins: 47,
-  totalKills: 892,
-  avgKillsPerMatch: 8.5,
-  winStreak: 5,
-  favoriteWeapon: "Pump Shotgun",
-  playingSince: "Agosto 2023",
-};
-
 export default function DuoZonePage() {
   const [memories, setMemories] = useState(mockMemories);
-  const highlightVideo = memories.find(m => m.isHighlight && m.mediaType === "VIDEO");
-  const regularMemories = memories.filter(m => !m.isHighlight);
+  const [fortniteStats, setFortniteStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  const regularMemories = memories;
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const response = await fetch("/api/fortnite-stats");
+        if (response.ok) {
+          const data = await response.json();
+          setFortniteStats(data.stats);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -84,28 +73,60 @@ export default function DuoZonePage() {
         <h1 className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)] mb-4">
           Duo <span className="text-gradient-gold">Zone</span>
         </h1>
-        <p className="text-[var(--color-text-muted)] max-w-xl mx-auto">
-          Nossas memórias épicas do Fortnite. Cada vitória conta uma história! 🎮
+        <p className="text-[var(--color-text-muted)] text-center">
+          Estatísticas do Fortnite da DehMarka! 🎮
         </p>
       </motion.div>
 
-      {/* Stats Grid - Estilo Career do Fortnite */}
+      {/* Stats Grid - 6 cards em 2x3 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12"
+        className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12"
       >
         {[
-          { icon: Trophy, label: "Vitórias", value: duoStats.totalWins, color: "text-yellow-500" },
-          { icon: Target, label: "Eliminations", value: duoStats.totalKills, color: "text-red-500" },
-          { icon: Crown, label: "Win Streak", value: duoStats.winStreak, color: "text-purple-500" },
-          { icon: Sparkles, label: "Média K/D", value: duoStats.avgKillsPerMatch, color: "text-blue-500" },
+          {
+            icon: Crown,
+            label: "Level",
+            value: "215",
+            color: "text-cyan-500"
+          },
+          {
+            icon: Trophy,
+            label: "Victory Royales",
+            value: loading ? "..." : (fortniteStats?.wins || 0).toLocaleString(),
+            color: "text-yellow-500"
+          },
+          {
+            icon: Sparkles,
+            label: "Win Rate",
+            value: loading ? "..." : `${(fortniteStats?.winRate || 0).toFixed(1)}%`,
+            color: "text-green-500"
+          },
+          {
+            icon: Gamepad2,
+            label: "Partidas",
+            value: loading ? "..." : (fortniteStats?.matches || 0).toLocaleString(),
+            color: "text-purple-500"
+          },
+          {
+            icon: Target,
+            label: "K/D Ratio",
+            value: loading ? "..." : (fortniteStats?.kd || 0).toFixed(2),
+            color: "text-blue-500"
+          },
+          {
+            icon: Target,
+            label: "Total Kills",
+            value: loading ? "..." : (fortniteStats?.kills || 0).toLocaleString(),
+            color: "text-red-500"
+          },
         ].map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card 
-              key={stat.label} 
+            <Card
+              key={stat.label}
               className="text-center py-4 bg-gradient-to-b from-[var(--color-surface)] to-[var(--color-accent-soft)]"
             >
               <Icon className={`w-6 h-6 mx-auto mb-2 ${stat.color}`} />
@@ -120,62 +141,18 @@ export default function DuoZonePage() {
         })}
       </motion.div>
 
-      {/* Highlight Video - A Melhor Partida */}
-      {highlightVideo && (
+      {/* Stats Detalhados */}
+      {fortniteStats && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <Crown className="w-6 h-6 text-[var(--color-primary)]" />
-            <h2 className="text-2xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)]">
-              Nossa Melhor Partida
-            </h2>
-          </div>
-          
-          <Card className="overflow-hidden border-2 border-[var(--color-primary)]/30 bg-gradient-to-b from-[var(--color-surface)] to-[var(--color-primary)]/5">
-            {/* Video Placeholder - Em produção, usar YouTube embed */}
-            <div className="aspect-video bg-[var(--color-secondary)] flex items-center justify-center relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)]/20 to-transparent" />
-              <div className="relative z-10 text-center">
-                <div className="w-20 h-20 mx-auto rounded-full bg-[var(--color-primary)] flex items-center justify-center mb-4 cursor-pointer hover:scale-110 transition-transform animate-pulse-gold">
-                  <Play className="w-8 h-8 text-[var(--color-secondary)] ml-1" />
-                </div>
-                <p className="text-[var(--color-accent)] font-medium">
-                  Clique para assistir o replay
-                </p>
-              </div>
-              {/* Badge */}
-              <div className="absolute top-4 right-4 px-3 py-1 bg-[var(--color-primary)] text-[var(--color-secondary)] text-sm font-bold rounded-full flex items-center gap-2">
-                <Trophy size={14} />
-                22 Kills
-              </div>
-            </div>
-            
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">
-                {highlightVideo.title}
-              </h3>
-              <p className="text-[var(--color-text-muted)] mb-4">
-                {highlightVideo.description}
-              </p>
-              <div className="flex items-center gap-4 text-sm text-[var(--color-text-muted)]">
-                <span className="flex items-center gap-1">
-                  <Calendar size={14} />
-                  {new Date(highlightVideo.matchDate).toLocaleDateString("pt-BR")}
-                </span>
-                <span className="text-[var(--color-primary)] font-medium">
-                  {highlightVideo.placement}
-                </span>
-              </div>
-            </div>
-          </Card>
         </motion.div>
       )}
 
-      {/* Hall da Fama - Grid de Memórias */}
+      {/* Victory Royales - Grid de Memórias */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -185,7 +162,7 @@ export default function DuoZonePage() {
           <div className="flex items-center gap-3">
             <Trophy className="w-6 h-6 text-[var(--color-primary)]" />
             <h2 className="text-2xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)]">
-              Hall da Fama
+              Nossas Vitórias
             </h2>
           </div>
           <Button variant="secondary" size="sm">
@@ -205,13 +182,6 @@ export default function DuoZonePage() {
               <Card hover className="overflow-hidden group">
                 {/* Image */}
                 <div className="aspect-video bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-secondary)] relative">
-                  {/* Kill badge */}
-                  {memory.kills && (
-                    <div className="absolute top-3 right-3 px-2 py-1 bg-red-500 text-white text-xs font-bold rounded flex items-center gap-1">
-                      <Target size={12} />
-                      {memory.kills}
-                    </div>
-                  )}
                   {/* Victory badge */}
                   <div className="absolute bottom-3 left-3 px-2 py-1 bg-[var(--color-primary)] text-[var(--color-secondary)] text-xs font-bold rounded">
                     {memory.placement}
@@ -220,18 +190,9 @@ export default function DuoZonePage() {
 
                 {/* Content */}
                 <div className="p-4">
-                  <h3 className="font-semibold text-[var(--color-text-primary)] mb-1 group-hover:text-[var(--color-primary)] transition-colors">
+                  <h4 className="font-semibold text-[var(--color-text-primary)] mb-1 group-hover:text-[var(--color-primary)] transition-colors">
                     {memory.title}
-                  </h3>
-                  {memory.description && (
-                    <p className="text-sm text-[var(--color-text-muted)] line-clamp-2 mb-3">
-                      {memory.description}
-                    </p>
-                  )}
-                  <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)]">
-                    <Calendar size={12} />
-                    {new Date(memory.matchDate).toLocaleDateString("pt-BR")}
-                  </div>
+                  </h4>
                 </div>
               </Card>
             </motion.div>

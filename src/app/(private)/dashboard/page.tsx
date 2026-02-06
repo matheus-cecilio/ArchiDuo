@@ -1,18 +1,20 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { 
-  FolderKanban, 
-  Palette, 
-  Gamepad2, 
-  Gift, 
+import {
+  FolderKanban,
+  Palette,
+  Gamepad2,
+  Gift,
   ArrowUpRight,
   TrendingUp,
-  Eye,
-  Image as ImageIcon
+  Trophy,
+  Target,
+  Zap
 } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui";
+import { Card } from "@/components/ui";
 
 const quickActions = [
   {
@@ -47,57 +49,57 @@ const quickActions = [
   },
 ];
 
-const stats = [
-  { label: "Projetos", value: "0", icon: FolderKanban },
-  { label: "Imagens", value: "0", icon: ImageIcon },
-  { label: "Vitórias Duo", value: "0", icon: Gamepad2 },
-  { label: "Visualizações", value: "0", icon: Eye },
-];
-
 export default function DashboardPage() {
+  const [fortniteStats, setFortniteStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const response = await fetch("/api/fortnite-stats");
+        if (response.ok) {
+          const data = await response.json();
+          setFortniteStats(data.stats);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchStats();
+  }, []);
+
+  const stats = [
+    {
+      label: "Victory Royales",
+      value: loading ? "..." : (fortniteStats?.wins || 0).toLocaleString(),
+      icon: Trophy,
+      color: "text-yellow-500"
+    },
+    {
+      label: "Total Kills",
+      value: loading ? "..." : (fortniteStats?.kills || 0).toLocaleString(),
+      icon: Target,
+      color: "text-red-500"
+    },
+    {
+      label: "Partidas",
+      value: loading ? "..." : (fortniteStats?.matches || 0).toLocaleString(),
+      icon: Gamepad2,
+      color: "text-purple-500"
+    },
+    {
+      label: "K/D Ratio",
+      value: loading ? "..." : (fortniteStats?.kd || 0).toFixed(2),
+      icon: Zap,
+      color: "text-blue-500"
+    },
+  ];
+
   return (
     <div className="max-w-6xl mx-auto">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)]">
-          Dashboard
-        </h1>
-        <p className="text-[var(--color-text-muted)] mt-2">
-          Bem-vindo(a) de volta! Gerencie seu site por aqui.
-        </p>
-      </motion.div>
-
-      {/* Stats Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-        className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
-      >
-        {stats.map((stat, index) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={stat.label} padding="md">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[var(--color-text-muted)] text-sm">{stat.label}</p>
-                  <p className="text-2xl font-bold text-[var(--color-text-primary)] mt-1">
-                    {stat.value}
-                  </p>
-                </div>
-                <div className="w-10 h-10 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
-                  <Icon size={20} className="text-[var(--color-primary)]" />
-                </div>
-              </div>
-            </Card>
-          );
-        })}
-      </motion.div>
 
       {/* Quick Actions */}
       <motion.div
@@ -119,8 +121,8 @@ export default function DashboardPage() {
                 transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
               >
                 <Link href={action.href}>
-                  <Card 
-                    hover 
+                  <Card
+                    hover
                     className={`relative overflow-hidden ${action.highlight ? "border-[var(--color-primary)]/30" : ""}`}
                   >
                     {action.highlight && (
@@ -148,29 +150,6 @@ export default function DashboardPage() {
             );
           })}
         </div>
-      </motion.div>
-
-      {/* Recent Activity Placeholder */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="mt-8"
-      >
-        <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-4">
-          Atividade Recente
-        </h2>
-        <Card className="text-center py-12">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--color-accent-soft)] flex items-center justify-center">
-            <TrendingUp size={28} className="text-[var(--color-text-muted)]" />
-          </div>
-          <p className="text-[var(--color-text-muted)]">
-            Nenhuma atividade recente
-          </p>
-          <p className="text-sm text-[var(--color-text-muted)] mt-2">
-            Adicione projetos ou memórias para ver o histórico aqui.
-          </p>
-        </Card>
       </motion.div>
     </div>
   );
