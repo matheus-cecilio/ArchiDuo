@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Settings, Image, FolderOpen } from "lucide-react";
+import { Settings } from "lucide-react";
 
 export default function AdminPage() {
     const router = useRouter();
@@ -14,14 +14,7 @@ export default function AdminPage() {
             icon: Settings,
             href: "/admin/aparencia",
             color: "from-purple-500 to-pink-500",
-        },
-        {
-            title: "Projetos",
-            description: "Gerencie portfólio de projetos",
-            icon: FolderOpen,
-            href: "/admin/projetos",
-            color: "from-blue-500 to-cyan-500",
-        },
+        }
     ];
 
     return (

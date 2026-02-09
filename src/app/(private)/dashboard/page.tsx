@@ -18,13 +18,6 @@ import { Card } from "@/components/ui";
 
 const quickActions = [
   {
-    title: "Gerenciar Projetos",
-    description: "Adicione, edite ou remova projetos do portfólio",
-    href: "/admin/projetos",
-    icon: FolderKanban,
-    color: "bg-blue-500/10 text-blue-500",
-  },
-  {
     title: "Aparência do Site",
     description: "Customize cores, fontes e textos",
     href: "/admin/aparencia",

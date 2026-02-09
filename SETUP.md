@@ -3,7 +3,7 @@
 ## 📋 Pré-requisitos
 
 - Node.js instalado
-- Docker Desktop instalado e **rodando**
+- Docker Desktop instalado e **rodando** (aberto)
 
 ## ⚡ Início Rápido (Comando Único!)
 

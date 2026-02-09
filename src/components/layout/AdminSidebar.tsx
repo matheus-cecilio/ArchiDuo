@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { 
   LayoutDashboard, 
-  FolderKanban, 
   Palette, 
   Gamepad2, 
   Gift, 
@@ -21,11 +20,6 @@ const sidebarItems = [
     label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
-  },
-  {
-    label: "Projetos",
-    href: "/admin/projetos",
-    icon: FolderKanban,
   },
   {
     label: "Aparência",

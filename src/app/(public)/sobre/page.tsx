@@ -288,7 +288,7 @@ export default function SobrePage() {
                     {item.icon}
                   </div>
 
-                  
+
                 </div>
 
                 {/* Título */}
@@ -364,9 +364,8 @@ export default function SobrePage() {
               <motion.p
                 key={index}
                 initial={{ opacity: 0.15 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 1.2 }}
-                viewport={{ once: true, margin: "-100px" }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.2, delay: 1.5 + index * 0.3 }}
                 className="text-xl md:text-2xl font-light text-gray-300 leading-relaxed text-center"
               >
                 {text}
