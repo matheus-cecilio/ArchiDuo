@@ -12,12 +12,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", isLoading, children, disabled, ...props }, ref) => {
     const baseStyles = "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
-    
+
     const variants = {
-      primary: "bg-[#D4AF37] text-black hover:bg-[#B8962E] focus:ring-[#D4AF37] shadow-md hover:shadow-lg hover:-translate-y-0.5",
-      secondary: "bg-transparent text-[#D4AF37] border-2 border-[#D4AF37] hover:bg-[#D4AF37] hover:text-black",
-      ghost: "bg-transparent text-white hover:bg-white/10",
-      danger: "bg-red-500 text-white hover:bg-red-600 focus:ring-red-500",
+      primary: "bg-[var(--color-primary)] text-[var(--color-secondary)] hover:bg-[var(--color-primary-dark)] focus:ring-[var(--color-primary)] shadow-md hover:shadow-lg hover:-translate-y-0.5",
+      secondary: "bg-transparent text-[var(--color-primary)] border-2 border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-secondary)]",
+      ghost: "bg-transparent text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10",
+      danger: "bg-[var(--color-error)] text-white hover:bg-red-600 focus:ring-[var(--color-error)]",
     };
 
     const sizes = {

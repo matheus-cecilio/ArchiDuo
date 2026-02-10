@@ -4,49 +4,57 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Save, RotateCcw, Eye, Loader2, Sparkles, Check } from "lucide-react";
 import { Button, Input, Card, ConfirmationModal } from "@/components/ui";
+import Link from "next/link";
 import { useTheme, SiteSettings } from "@/providers/ThemeProvider";
 
 const fontOptions = [
+    { label: "Inter", value: "Inter" },
     { label: "Playfair Display", value: "Playfair Display" },
     { label: "Cormorant Garamond", value: "Cormorant Garamond" },
-    { label: "Libre Baskerville", value: "Libre Baskerville" },
-    { label: "Merriweather", value: "Merriweather" },
+    { label: "Cinzel", value: "Cinzel" },
     { label: "Lora", value: "Lora" },
     { label: "Montserrat", value: "Montserrat" },
-    { label: "Open Sans", value: "Open Sans" },
+    { label: "Raleway", value: "Raleway" },
+    { label: "Oswald", value: "Oswald" },
 ];
+
+const FONTS_URLS: Record<string, string> = {
+    "Inter": "https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap",
+    "Playfair Display": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap",
+    "Cormorant Garamond": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap",
+    "Cinzel": "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap",
+    "Lora": "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap",
+    "Montserrat": "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap",
+    "Raleway": "https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap",
+    "Oswald": "https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap",
+};
 
 const colorPresets = {
     primary: [
-        "#D4AF37", // Dourado Original
-        "#EAB308", // Amarelo
-        "#F97316", // Laranja
-        "#EF4444", // Vermelho
-        "#DB2777", // Rosa
-        "#8B5CF6", // Roxo
-        "#2563EB", // Azul Real
-        "#0EA5E9", // Azul Céu
-        "#10B981", // Verde Esmeralda
-        "#84CC16", // Verde Lima
+        "#D4AF37", // Gold
+        "#B76E79", // Rose Gold
+        "#C0C0C0", // Silver
+        "#0F52BA", // Sapphire Blue
+        "#50C878", // Emerald Green
+        "#800020", // Bordeaux
+        "#1A1A1B", // Dark Zinc
+        "#E5C100", // Bright Gold
     ],
     secondary: [
-        "#0A0A0A", // Preto Original
+        "#0A0A0A", // Jet Black
         "#171717", // Neutral 900
-        "#1F2937", // Gray 800
         "#1E1B4B", // Indigo 950
-        "#312E81", // Indigo 900
-        "#14532D", // Green 900
-        "#450A0A", // Red 900
-        "#271C19", // Marrom
+        "#064E3B", // Emerald 950
+        "#450A0A", // Red 950
+        "#141414", // Deep Gray
     ],
     accent: [
-        "#FAFAFA", // Branco Original
-        "#F3F4F6", // Gray 100
-        "#E5E7EB", // Gray 200
-        "#FFF7ED", // Orange 50 (Creme)
-        "#FEF2F2", // Red 50
-        "#F0F9FF", // Sky 50
-        "#F5F3FF", // Violet 50
+        "#FAFAFA", // Pure White
+        "#F3F4F6", // Neutral Gray
+        "#FFF7ED", // Cream/Almond
+        "#FEFCE8", // Pale Gold
+        "#F0F9FF", // Ice Blue
+        "#FAF5FF", // Lavender Mist
     ]
 };
 
@@ -89,6 +97,80 @@ export default function AparenciaPage() {
 
         fetchSettings();
     }, []);
+
+    // Carregar fonte dinamicamente para o preview
+    useEffect(() => {
+        const url = FONTS_URLS[settings.fontFamily];
+        if (url) {
+            let link = document.getElementById("preview-font-loader") as HTMLLinkElement;
+            if (!link) {
+                link = document.createElement("link");
+                link.id = "preview-font-loader";
+                link.rel = "stylesheet";
+                document.head.appendChild(link);
+            }
+            if (link.href !== url) {
+                link.href = url;
+            }
+        }
+    }, [settings.fontFamily]);
+
+    const calculateDerivedColors = (primaryColor: string) => {
+        const hex = primaryColor.replace("#", "");
+        const r = parseInt(hex.substring(0, 2), 16) / 255;
+        const g = parseInt(hex.substring(2, 4), 16) / 255;
+        const b = parseInt(hex.substring(4, 6), 16) / 255;
+
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h = 0;
+        let s = 0;
+        const l = (max + min) / 2;
+
+        if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                case g: h = ((b - r) / d + 2) / 6; break;
+                case b: h = ((r - g) / d + 4) / 6; break;
+            }
+        }
+
+        const hslToHex = (h: number, s: number, l: number) => {
+            const hue2rgb = (p: number, q: number, t: number) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            };
+            let r, g, b;
+            if (s === 0) r = g = b = l;
+            else {
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1 / 3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1 / 3);
+            }
+            const toHex = (x: number) => {
+                const hex = Math.round(x * 255).toString(16);
+                return hex.length === 1 ? "0" + hex : hex;
+            };
+            return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+        };
+
+        return {
+            light: hslToHex(h, s, Math.min(l + 0.15, 0.95)),
+            dark: hslToHex(h, s, Math.max(l - 0.1, 0.2)),
+            softer: hslToHex(h, Math.max(s - 0.2, 0), Math.min(l + 0.25, 0.9)),
+            highlight: hslToHex(h, Math.max(0, s - 0.2), Math.min(l + 0.45, 0.98)),
+        };
+    };
+
+    const derivedColors = calculateDerivedColors(settings.primaryColor);
 
     const updateSetting = <K extends keyof SiteSettings>(
         key: K,
@@ -204,17 +286,23 @@ export default function AparenciaPage() {
                     </p>
                 </div>
                 <div className="flex gap-3">
-                    <Button variant="ghost" onClick={() => setShowResetModal(true)}>
+                    <Button
+                        variant="secondary"
+                        onClick={() => setShowResetModal(true)}
+                        className="border-[var(--color-border)] text-[var(--color-text-primary)] hover:border-[var(--color-primary)]/50"
+                    >
                         <RotateCcw size={18} className="mr-2" />
                         Restaurar
                     </Button>
                     <Button
+                        variant="primary"
                         onClick={handleSave}
                         isLoading={isLoading}
                         disabled={!hasChanges}
+                        className="shadow-lg shadow-[var(--color-primary)]/20"
                     >
                         <Save size={18} className="mr-2" />
-                        Salvar
+                        Salvar Alterações
                     </Button>
                 </div>
             </motion.div>
@@ -406,130 +494,111 @@ export default function AparenciaPage() {
                             </a>
                         </div>
 
-                        {/* Miniatura do Site Real */}
+                        {/* Scaled Preview of the Real Site */}
                         <div
-                            className="rounded-xl overflow-hidden border border-[var(--color-border)] relative shadow-lg group"
-                            style={{
-                                backgroundColor: settings.secondaryColor,
-                                color: settings.accentColor,
-                                fontFamily: 'var(--font-inter)',
-                            } as React.CSSProperties}
+                            className="rounded-xl overflow-hidden border border-[var(--color-border)] relative shadow-lg group aspect-video bg-[var(--color-surface)]"
                         >
-                            {/* Navbar Simulada */}
                             <div
-                                className="absolute top-0 left-0 right-0 p-3 flex justify-between items-center z-20"
+                                className="w-[286%] h-[286%] origin-top-left transform scale-[0.35] bg-[var(--color-secondary)] text-[var(--color-text-primary)]"
+                                style={{
+                                    '--color-primary': settings.primaryColor,
+                                    '--color-secondary': settings.secondaryColor,
+                                    '--color-accent': settings.accentColor,
+                                    '--font-playfair': `'${settings.fontFamily}', serif`,
+                                    '--color-primary-light': derivedColors.light,
+                                    '--color-primary-dark': derivedColors.dark,
+                                    '--color-primary-softer': derivedColors.softer,
+                                    '--color-primary-highlight': derivedColors.highlight,
+                                    '--color-surface': settings.accentColor, // Base surface color
+                                } as React.CSSProperties}
                             >
-                                <span className="font-bold" style={{ fontSize: '10px', fontFamily: settings.fontFamily, color: settings.primaryColor }}>
-                                    {settings.siteName}
-                                </span>
-                                <div className="flex gap-2">
-                                    {['Home', 'Sobre', 'Contato', 'Login'].map((link) => (
-                                        <span key={link} className="font-medium opacity-80 cursor-pointer hover:text-[var(--color-primary)] transition-colors" style={{ fontSize: '6px', color: settings.accentColor }}>
-                                            {link}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Hero Section Miniatura */}
-                            <div className="relative aspect-video flex items-center justify-center p-4 text-center overflow-hidden">
-
-                                {/* Background Pattern */}
-                                <div className="absolute inset-0 opacity-5"
-                                    style={{
-                                        backgroundImage: `radial-gradient(circle, ${settings.accentColor} 0.5px, transparent 0.5px)`,
-                                        backgroundSize: '16px 16px'
-                                    }}
-                                />
-
-                                {/* Linhas decorativas (Bordas superior/inferior) */}
-                                <div className="absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-20" style={{ backgroundColor: settings.primaryColor }} />
-                                <div className="absolute bottom-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-20" style={{ backgroundColor: settings.primaryColor }} />
-
-                                <div className="relative z-10 flex flex-col items-center max-w-[95%]">
-                                    {/* Badge - Sem borda visível, apenas padding */}
-                                    <div className="flex items-center gap-1 mb-2 px-1.5 py-0.5 rounded-full">
-                                        <Sparkles size={8} style={{ color: settings.primaryColor }} />
-                                        <span style={{ fontSize: '8px', color: settings.primaryColor }}>
-                                            Arquitetura & Design de Interiores
+                                {/* Navbar Simulada (Baseada na real) */}
+                                <div className="absolute top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className="text-xl font-bold tracking-tight"
+                                            style={{ fontFamily: `'${settings.fontFamily}', serif` }}
+                                        >
+                                            <span className="text-gradient-primary">Archi</span>
+                                            <span className="text-gradient-primary">Duo</span>
                                         </span>
                                     </div>
-
-                                    {/* Título com cores alternadas e quebra de linha inteligente */}
-                                    <div
-                                        className="font-bold mb-2 leading-tight"
-                                        style={{ fontSize: '16px', fontFamily: settings.fontFamily }}
-                                    >
-                                        {/* Renderiza o título tentando simular a estrutura do site real */}
-                                        {settings.heroTitle.split(' ').map((word, index) => (
-                                            <span
-                                                key={index}
-                                                style={{
-                                                    color: index % 2 === 0 ? settings.accentColor : settings.primaryColor,
-                                                    display: 'inline-block',
-                                                    marginRight: '3px'
-                                                }}
-                                            >
-                                                {word}
+                                    <div className="hidden md:flex items-center gap-8">
+                                        {['Home', 'Sobre', 'Contato', 'Login'].map((link) => (
+                                            <span key={link} className="text-sm font-medium text-[var(--color-accent)] hover:text-[var(--color-primary)] opacity-80 transition-colors cursor-pointer">
+                                                {link}
                                             </span>
                                         ))}
                                     </div>
+                                </div>
 
-                                    {/* Subtítulo */}
-                                    <p
-                                        className="mb-3 leading-relaxed opacity-60 max-w-[200px]"
-                                        style={{ fontSize: '7px', color: settings.accentColor }}
-                                    >
-                                        {settings.heroSubtitle}
-                                    </p>
+                                {/* Hero Section (Cópia da Home Page) */}
+                                <div className="relative h-full flex items-center justify-center text-center px-4">
+                                    {/* Linha de acento no topo (igual a home) */}
+                                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent" />
 
-                                    {/* Botão */}
-                                    <div
-                                        className="px-4 py-1.5 rounded-[3px] font-bold tracking-wide shadow-sm transform transition-transform group-hover:scale-105"
-                                        style={{
-                                            fontSize: '7px',
-                                            backgroundColor: settings.primaryColor,
-                                            color: settings.secondaryColor
-                                        }}
-                                    >
-                                        Fale Conosco
+                                    <div className="max-w-4xl mx-auto">
+                                        {/* Badge */}
+                                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 bg-[var(--color-accent)]/5 backdrop-blur-sm border border-[var(--color-primary)]/20 mx-auto">
+                                            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" />
+                                            <span className="text-sm text-[var(--color-primary)]">
+                                                Arquitetura & Design de Interiores
+                                            </span>
+                                        </div>
+
+                                        {/* Main Title */}
+                                        <h1
+                                            className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
+                                            style={{ fontFamily: `'${settings.fontFamily}', serif` }}
+                                        >
+                                            <span className="text-[var(--color-accent)]/90 block sm:inline mr-2">Transformando</span>
+                                            <span className="text-gradient-primary block sm:inline">Espaços</span>
+                                            <br className="hidden sm:block" />
+                                            <span className="text-[var(--color-accent)]/90 block sm:inline mr-2">em</span>
+                                            <span className="text-gradient-primary block sm:inline">Experiências</span>
+                                        </h1>
+
+                                        {/* Subtitle */}
+                                        <p className="text-lg md:text-xl text-[var(--color-accent)]/60 mb-12 max-w-2xl mx-auto leading-relaxed">
+                                            {settings.heroSubtitle || "Criamos projetos arquitetônicos únicos que unem funcionalidade, estética e a essência de cada cliente."}
+                                        </p>
+
+                                        {/* CTAs */}
+                                        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-12">
+                                            <div className="px-8 py-3 rounded-md font-medium text-sm transition-all shadow-lg hover:brightness-110 active:scale-[0.98]"
+                                                style={{ backgroundColor: settings.primaryColor, color: settings.secondaryColor }}>
+                                                Fale Conosco
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Stats Section (Rodapé) */}
+                                <div className="absolute bottom-0 left-0 right-0 py-4 bg-[var(--color-surface)] border-t border-[var(--color-primary)]/10">
+                                    <div className="grid grid-cols-3 gap-4 text-center">
+                                        {[
+                                            { num: "5+", label: "Projetos" },
+                                            { num: "8", label: "Anos" },
+                                            { num: "100%", label: "Clientes" }
+                                        ].map((stat) => (
+                                            <div key={stat.label}>
+                                                <div
+                                                    className="text-2xl font-bold text-gradient-primary"
+                                                    style={{ fontFamily: `'${settings.fontFamily}', serif` }}
+                                                >
+                                                    {stat.num}
+                                                </div>
+                                                <div className="text-xs text-[var(--color-accent)]/60 uppercase tracking-widest mt-1">
+                                                    {stat.label}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Stats Section (Rodapé Branco) */}
-                            <div
-                                className="py-2 px-4 grid grid-cols-3 gap-1 text-center"
-                                style={{ backgroundColor: settings.accentColor }}
-                            >
-                                {[
-                                    { num: "5+", label: "Projetos" },
-                                    { num: "8", label: "Anos" },
-                                    { num: "100%", label: "Clientes" }
-                                ].map((stat) => (
-                                    <div key={stat.label}>
-                                        <div
-                                            className="font-bold mb-[2px]"
-                                            style={{
-                                                fontSize: '12px',
-                                                color: settings.primaryColor,
-                                                fontFamily: settings.fontFamily
-                                            }}
-                                        >
-                                            {stat.num}
-                                        </div>
-                                        <div
-                                            className="uppercase tracking-wide font-medium leading-none"
-                                            style={{ fontSize: '5px', color: settings.secondaryColor, opacity: 0.6 }}
-                                        >
-                                            {stat.label}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
                         </div>
 
-                        <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">
+                        <p className="text-xs text-[var(--color-text-muted)] text-center mt-2">
                             Preview aproximado. Salve para ver o resultado final no site.
                         </p>
                     </Card>

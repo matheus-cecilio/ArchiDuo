@@ -9,8 +9,8 @@ const defaultSettings = {
     secondaryColor: "#0A0A0A",
     accentColor: "#FAFAFA",
     fontFamily: "Playfair Display",
-    heroTitle: "Arquitetura & Design",
-    heroSubtitle: "Transformando espaços em experiências",
+    heroTitle: "Transformando Espaços em Experiências",
+    heroSubtitle: "Criamos projetos arquitetônicos únicos que unem funcionalidade, estética e a essência de cada cliente.",
     siteName: "ArchiDuo",
 };
 

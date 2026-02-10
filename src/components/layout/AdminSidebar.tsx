@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { 
-  LayoutDashboard, 
-  Palette, 
-  Gamepad2, 
-  Gift, 
+import {
+  LayoutDashboard,
+  Palette,
+  Gamepad2,
+  Gift,
   LogOut,
   ChevronLeft,
   Menu
@@ -56,7 +56,7 @@ export function AdminSidebar() {
 
       {/* Overlay for mobile */}
       {!isCollapsed && (
-        <div 
+        <div
           className="lg:hidden fixed inset-0 bg-black/50 z-40"
           onClick={() => setIsCollapsed(true)}
         />
@@ -77,7 +77,7 @@ export function AdminSidebar() {
                 A
               </div>
               {!isCollapsed && (
-                <span className="text-xl font-bold font-[family-name:var(--font-playfair)] text-gradient-gold">
+                <span className="text-xl font-bold font-[family-name:var(--font-playfair)] text-gradient-primary">
                   ArchiDuo
                 </span>
               )}
@@ -120,9 +120,9 @@ export function AdminSidebar() {
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="hidden lg:flex items-center justify-center p-4 border-t border-[var(--color-border)]/20 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"
           >
-            <ChevronLeft 
-              size={20} 
-              className={cn("transition-transform", isCollapsed && "rotate-180")} 
+            <ChevronLeft
+              size={20}
+              className={cn("transition-transform", isCollapsed && "rotate-180")}
             />
             {!isCollapsed && <span className="ml-2 text-sm">Recolher</span>}
           </button>

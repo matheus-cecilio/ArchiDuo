@@ -15,7 +15,7 @@ const PROJECTS = [
   { src: "/projects/img-boa5.png", alt: "Projeto 5" },
   { src: "/projects/img-boa6.png", alt: "Projeto 6" },
   { src: "/projects/img-boa7.png", alt: "Projeto 7" },
-  { src: "/projects/img-boa8.png", alt: "Projeto 8" },  
+  { src: "/projects/img-boa8.png", alt: "Projeto 8" },
   { src: "/projects/img-boa9.png", alt: "Projeto 9" },
   { src: "/projects/img-boa10.png", alt: "Projeto 10" },
   { src: "/projects/img-boa11.png", alt: "Projeto 11" },
@@ -45,11 +45,8 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Background Pattern - now more subtle since we have animation */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
-        </div>
+        {/* Background Pattern - removed to avoid color clash with dynamic theme */}
+        <div className="absolute inset-0 opacity-5" />
 
         {/* Gold accent line */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent" />
@@ -72,23 +69,23 @@ export default function HomePage() {
 
               {/* Main Title */}
               <h1 className="text-5xl md:text-7xl font-bold font-[family-name:var(--font-playfair)] mb-6 leading-tight">
-                <span className="text-white">Transformando</span>{" "}
-                <span className="text-gradient-gold">Espaços</span>
+                <span className="text-[var(--color-surface)]/80">Transformando</span>{" "}
+                <span className="text-gradient-primary">Espaços</span>
                 <br />
-                <span className="text-white">em</span>{" "}
-                <span className="text-gradient-gold">Experiências</span>
+                <span className="text-[var(--color-surface)]/80">em</span>{" "}
+                <span className="text-gradient-primary">Experiências</span>
               </h1>
 
               {/* Subtitle */}
               <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-                Criamos projetos arquitetônicos únicos que unem funcionalidade, 
+                Criamos projetos arquitetônicos únicos que unem funcionalidade,
                 estética e a essência de cada cliente.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-6">
                 <Link href="/contato">
-                  <Button size="lg" className="min-w-[180px]">
+                  <Button size="sm" className="min-w-[180px]">
                     Fale Conosco
                   </Button>
                 </Link>
@@ -115,9 +112,9 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-playfair)] text-gradient-gold mb-2">
-  {stat.number}
-</div>
+                <div className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-playfair)] text-gradient-primary mb-2">
+                  {stat.number}
+                </div>
                 <div className="text-sm text-[var(--color-text-muted)]">
                   {stat.label}
                 </div>
@@ -138,7 +135,7 @@ export default function HomePage() {
             className="flex flex-col items-center justify-center text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)] mb-4">
-              Projetos em <span className="text-gradient-gold">Destaque</span>
+              Projetos em <span className="text-gradient-primary">Destaque</span>
             </h2>
             <p className="text-[var(--color-text-muted)] max-w-2xl text-center leading-relaxed">
               Conheça alguns dos nossos trabalhos mais recentes e inspire-se para transformar o seu espaço.
@@ -186,7 +183,7 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section className="py-28 relative bg-[#0A0A0A] overflow-hidden">
+      <section className="py-28 relative bg-[var(--color-secondary)] overflow-hidden">
         {/* Background Elements - Arquitetura */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-1/4 left-10 w-64 h-64 border border-white/10 rounded-full"></div>
@@ -218,13 +215,13 @@ export default function HomePage() {
               </div>
               <div className="w-12 h-px bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent"></div>
             </div>
-            
-            <h2 className="text-5xl md:text-6xl font-bold font-[family-name:var(--font-playfair)] !text-white mb-4">
-              Serviços <span className="text-gradient-gold">Exclusivos</span>
+
+            <h2 className="text-5xl md:text-6xl font-bold font-[family-name:var(--font-playfair)] !text-[var(--color-accent)] mb-4">
+              Serviços <span className="text-gradient-primary">Exclusivos</span>
             </h2>
-            
+
             <p className="text-gray-300 text-xl max-w-2xl mx-auto leading-relaxed">
-              Transformamos suas ideias em espaços funcionais e esteticamente 
+              Transformamos suas ideias em espaços funcionais e esteticamente
               impressionantes, com atenção aos mínimos detalhes.
             </p>
           </motion.div>
@@ -239,18 +236,18 @@ export default function HomePage() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              whileHover={{ 
+              whileHover={{
                 y: -8,
                 transition: { type: "spring", stiffness: 300, damping: 20 }
               }}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#111111] to-[#0a0a0a] border border-[#2a2a2a] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-background)] border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
             >
               {/* Card Background Pattern */}
               <div className="absolute inset-0 opacity-20"></div>
-              
+
               {/* Gold accent line */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
+
               <div className="p-10 relative">
                 {/* Icon and Title with Creative Layout */}
                 <div className="flex items-start gap-6 mb-6">
@@ -262,9 +259,9 @@ export default function HomePage() {
                     </div>
                     <div className="absolute -inset-2 bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
-                  
+
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold font-[family-name:var(--font-playfair)] !text-white mb-2">
+                    <h3 className="text-2xl font-bold font-[family-name:var(--font-playfair)] !text-[var(--color-text-primary)] mb-2">
                       Arquitetura
                     </h3>
                     <div className="w-12 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-amber-600 mb-3"></div>
@@ -273,18 +270,18 @@ export default function HomePage() {
                     </p>
                   </div>
                 </div>
-                
+
                 {/* Description */}
                 <p className="text-gray-400 leading-relaxed mb-6 text-justify group-hover:text-gray-300 transition-colors duration-300">
-                  Criamos projetos arquitetônicos que unem estética, funcionalidade e sustentabilidade, 
-                  atendendo às necessidades específicas de cada cliente e transformando conceitos em 
+                  Criamos projetos arquitetônicos que unem estética, funcionalidade e sustentabilidade,
+                  atendendo às necessidades específicas de cada cliente e transformando conceitos em
                   espaços tangíveis e inspiradores.
                 </p>
-                
+
                 {/* Features List */}
                 <ul className="space-y-3 mb-2">
                   {['Projetos residenciais personalizados', 'Aprovações legais e regulatórias', 'Gestão de obra'].map((item, index) => (
-                    <motion.li 
+                    <motion.li
                       key={index}
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -306,18 +303,18 @@ export default function HomePage() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
-              whileHover={{ 
+              whileHover={{
                 y: -8,
                 transition: { type: "spring", stiffness: 300, damping: 20 }
               }}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#111111] to-[#0a0a0a] border border-[#2a2a2a] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-background)] border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
             >
               {/* Card Background Pattern */}
               <div className="absolute inset-0 opacity-20"></div>
-              
+
               {/* Gold accent line */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
+
               <div className="p-10 relative">
                 {/* Icon and Title with Creative Layout */}
                 <div className="flex items-start gap-6 mb-6">
@@ -329,9 +326,9 @@ export default function HomePage() {
                     </div>
                     <div className="absolute -inset-2 bg-gradient-to-r from-[var(--color-primary)]/10 to-transparent rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
-                  
+
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold font-[family-name:var(--font-playfair)] !text-white mb-2">
+                    <h3 className="text-2xl font-bold font-[family-name:var(--font-playfair)] !text-[var(--color-text-primary)] mb-2">
                       Design de Interiores
                     </h3>
                     <div className="w-12 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-amber-600 mb-3"></div>
@@ -340,18 +337,18 @@ export default function HomePage() {
                     </p>
                   </div>
                 </div>
-                
+
                 {/* Description */}
                 <p className="text-gray-400 leading-relaxed mb-6 text-justify group-hover:text-gray-300 transition-colors duration-300">
-                  Desenvolvemos ambientes que refletem sua personalidade e estilo de vida, 
-                  combinando estética, conforto e funcionalidade através da seleção criteriosa 
+                  Desenvolvemos ambientes que refletem sua personalidade e estilo de vida,
+                  combinando estética, conforto e funcionalidade através da seleção criteriosa
                   de materiais, mobiliário, iluminação e elementos decorativos.
                 </p>
-                
+
                 {/* Features List */}
                 <ul className="space-y-3 mb-2">
                   {['Projeto de ambientes residenciais', 'Design comercial e corporativo', 'Iluminação e mobiliário'].map((item, index) => (
-                    <motion.li 
+                    <motion.li
                       key={index}
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -425,7 +422,7 @@ export default function HomePage() {
         )}
       </AnimatePresence>
 
-      
+
     </>
   );
 }

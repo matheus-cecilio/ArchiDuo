@@ -33,6 +33,18 @@ export function AnimatedBackground() {
     let animationFrameId: number;
     let time = 0;
 
+    // Função auxiliar para converter hex para RGB
+    const hexToRgb = (hex: string): { r: number; g: number; b: number } => {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result
+        ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+        : { r: 212, g: 175, b: 55 };
+    };
+
     const setCanvasSize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -44,13 +56,13 @@ export function AnimatedBackground() {
     const shapes: ArchShape[] = [];
     const shapeTypes: ShapeType[] = ["house", "window", "door", "bed", "couch", "table", "lamp", "plant", "frame"];
     const edgeMargin = 80;
-    
+
     // Zona de exclusão no centro (onde fica o texto)
     const centerExclusionWidth = canvas.width * 0.45; // 45% da largura no centro
     const centerExclusionHeight = canvas.height * 0.5; // 50% da altura no centro
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    
+
     // Função para verificar se está na zona de exclusão
     const isInExclusionZone = (x: number, y: number): boolean => {
       return (
@@ -60,13 +72,13 @@ export function AnimatedBackground() {
         y < centerY + centerExclusionHeight / 2
       );
     };
-    
+
     // Dividir a tela em uma grade de zonas (5 colunas x 3 linhas = 15 zonas)
     const cols = 5;
     const rows = 3;
     const zoneWidth = (canvas.width - edgeMargin * 2) / cols;
     const zoneHeight = (canvas.height - edgeMargin * 2) / rows;
-    
+
     // Criar lista de zonas, excluindo as do centro
     const zones: { col: number; row: number }[] = [];
     for (let row = 0; row < rows; row++) {
@@ -74,20 +86,20 @@ export function AnimatedBackground() {
         // Calcular centro da zona
         const zoneCenterX = edgeMargin + col * zoneWidth + zoneWidth / 2;
         const zoneCenterY = edgeMargin + row * zoneHeight + zoneHeight / 2;
-        
+
         // Só adicionar se não estiver na zona de exclusão central
         if (!isInExclusionZone(zoneCenterX, zoneCenterY)) {
           zones.push({ col, row });
         }
       }
     }
-    
+
     // Embaralhar as zonas para distribuição aleatória
     for (let i = zones.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [zones[i], zones[j]] = [zones[j], zones[i]];
     }
-    
+
     // Função para verificar colisão entre duas formas (considera tamanho + margem de segurança + flutuação)
     const checkCollision = (
       x1: number, y1: number, size1: number,
@@ -96,14 +108,14 @@ export function AnimatedBackground() {
       // Margem extra para flutuação (floatY = ±6, floatX = ±3) + margem de segurança
       const safetyMargin = 20;
       const minDistance = (size1 / 2) + (size2 / 2) + safetyMargin;
-      
+
       const dx = x1 - x2;
       const dy = y1 - y2;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       return distance < minDistance;
     };
-    
+
     // Função para verificar se nova forma colide com alguma existente
     const collidesWithExisting = (x: number, y: number, size: number): boolean => {
       for (const shape of shapes) {
@@ -113,19 +125,19 @@ export function AnimatedBackground() {
       }
       return false;
     };
-    
+
     // Criar formas, uma em cada zona válida
     const numShapes = Math.min(zones.length, 12);
-    
+
     for (let i = 0; i < numShapes; i++) {
       const zone = zones[i];
       const size = Math.random() * 25 + 40;
-      
+
       // Calcular posição aleatória dentro da zona
       const zoneMargin = 30;
       let x = edgeMargin + zone.col * zoneWidth + zoneMargin + Math.random() * (zoneWidth - zoneMargin * 2);
       let y = edgeMargin + zone.row * zoneHeight + zoneMargin + Math.random() * (zoneHeight - zoneMargin * 2);
-      
+
       // Garantir que não está na zona de exclusão (empurrar pra fora se necessário)
       if (isInExclusionZone(x, y)) {
         if (x < centerX) {
@@ -134,16 +146,16 @@ export function AnimatedBackground() {
           x = centerX + centerExclusionWidth / 2 + 50;
         }
       }
-      
+
       // Tentar encontrar posição sem colisão (máximo 10 tentativas)
       let attempts = 0;
       const maxAttempts = 10;
-      
+
       while (collidesWithExisting(x, y, size) && attempts < maxAttempts) {
         // Tentar nova posição dentro da mesma zona
         x = edgeMargin + zone.col * zoneWidth + zoneMargin + Math.random() * (zoneWidth - zoneMargin * 2);
         y = edgeMargin + zone.row * zoneHeight + zoneMargin + Math.random() * (zoneHeight - zoneMargin * 2);
-        
+
         // Verificar zona de exclusão novamente
         if (isInExclusionZone(x, y)) {
           if (x < centerX) {
@@ -152,10 +164,10 @@ export function AnimatedBackground() {
             x = centerX + centerExclusionWidth / 2 + 50;
           }
         }
-        
+
         attempts++;
       }
-      
+
       // Só adicionar se não houver colisão (ou após máximo de tentativas, pular esta forma)
       if (!collidesWithExisting(x, y, size)) {
         shapes.push({
@@ -279,92 +291,92 @@ export function AnimatedBackground() {
     };
 
     const drawBed = (x: number, y: number, size: number, progress: number) => {
-        const h = size * 1.0;
-        const w = size * 0.8;
+      const h = size * 1.0;
+      const w = size * 0.8;
 
-        // Colchão
-        if (progress > 0) {
-            const p = Math.min(progress * 1.5, 1);
+      // Colchão
+      if (progress > 0) {
+        const p = Math.min(progress * 1.5, 1);
 
-            ctx.beginPath();
-            ctx.roundRect(
-            x - w / 2,
-            y - h / 2,
-            w * p,
-            h * p,
-            size * 0.05
-            );
-            ctx.stroke();
+        ctx.beginPath();
+        ctx.roundRect(
+          x - w / 2,
+          y - h / 2,
+          w * p,
+          h * p,
+          size * 0.05
+        );
+        ctx.stroke();
+      }
+
+      // Travesseiros
+      if (progress > 0.6) {
+        const p = Math.min((progress - 0.6) * 2.5, 1);
+
+        const pillowW = w * 0.4;
+        const pillowH = h * 0.18;
+
+        // esquerdo
+        ctx.beginPath();
+        ctx.roundRect(
+          x - w * 0.45,
+          y - h * 0.42,
+          pillowW * p,
+          pillowH * p,
+          size * 0.04
+        );
+        ctx.stroke();
+
+        // direito
+        ctx.beginPath();
+        ctx.roundRect(
+          x + w * 0.05,
+          y - h * 0.42,
+          pillowW * p,
+          pillowH * p,
+          size * 0.04
+        );
+        ctx.stroke();
+      }
+
+      // Edredom
+      if (progress > 0.4) {
+        const p = Math.min((progress - 0.4) * 2.0, 1);
+
+        const blanketX = x - w * 0.46;
+        const blanketY = y - h * 0.15;
+        const blanketW = w * 0.92 * p;
+        const blanketH = h * 0.65 * p;
+
+        // Forma principal do edredom
+        ctx.beginPath();
+        ctx.roundRect(
+          blanketX,
+          blanketY,
+          blanketW,
+          blanketH,
+          size * 0.05
+        );
+        ctx.stroke();
+
+        // Ondas (textura edredom)
+        const lines = 3;
+        for (let i = 1; i <= lines; i++) {
+          const ly = blanketY + (blanketH / (lines + 1)) * i;
+
+          ctx.beginPath();
+          ctx.moveTo(blanketX + blanketW * 0.05, ly);
+
+          ctx.quadraticCurveTo(
+            x,
+            ly + size * 0.05,
+            blanketX + blanketW * 0.95,
+            ly
+          );
+
+          ctx.stroke();
         }
-
-        // Travesseiros
-        if (progress > 0.6) {
-            const p = Math.min((progress - 0.6) * 2.5, 1);
-
-            const pillowW = w * 0.4;
-            const pillowH = h * 0.18;
-
-            // esquerdo
-            ctx.beginPath();
-            ctx.roundRect(
-            x - w * 0.45,
-            y - h * 0.42,
-            pillowW * p,
-            pillowH * p,
-            size * 0.04
-            );
-            ctx.stroke();
-
-            // direito
-            ctx.beginPath();
-            ctx.roundRect(
-            x + w * 0.05,
-            y - h * 0.42,
-            pillowW * p,
-            pillowH * p,
-            size * 0.04
-            );
-            ctx.stroke();
-        }
-
-        // Edredom
-        if (progress > 0.4) {
-            const p = Math.min((progress - 0.4) * 2.0, 1);
-
-            const blanketX = x - w * 0.46;
-            const blanketY = y - h * 0.15;
-            const blanketW = w * 0.92 * p;
-            const blanketH = h * 0.65 * p;
-
-            // Forma principal do edredom
-            ctx.beginPath();
-            ctx.roundRect(
-            blanketX,
-            blanketY,
-            blanketW,
-            blanketH,
-            size * 0.05
-            );
-            ctx.stroke();
-
-            // Ondas (textura edredom)
-            const lines = 3;
-            for (let i = 1; i <= lines; i++) {
-            const ly = blanketY + (blanketH / (lines + 1)) * i;
-
-            ctx.beginPath();
-            ctx.moveTo(blanketX + blanketW * 0.05, ly);
-
-            ctx.quadraticCurveTo(
-                x,
-                ly + size * 0.05,
-                blanketX + blanketW * 0.95,
-                ly
-            );
-
-            ctx.stroke();
-            }
-        }
+      }
     };
 
 
@@ -570,7 +582,9 @@ export function AnimatedBackground() {
       const centerX = canvas.width / 2;
       const centerY = canvas.height * 0.4;
 
-      ctx.strokeStyle = "rgba(212, 175, 55, 0.06)";
+      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() || '#D4AF37';
+      const rgb = hexToRgb(primaryColor);
+      ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.06)`;
       ctx.lineWidth = 1;
 
       for (let i = 0; i < 8; i++) {
@@ -611,13 +625,15 @@ export function AnimatedBackground() {
         ctx.rotate(shape.rotation + Math.sin(time * 0.008 + shape.floatOffset) * 0.015);
 
         // Estilo
-        ctx.strokeStyle = `rgba(212, 175, 55, ${shape.opacity * (shape.isDrawn ? 1 : 0.7 + shape.drawProgress * 0.3)})`;
+        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() || '#D4AF37';
+        const rgb = hexToRgb(primaryColor);
+        ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${shape.opacity * (shape.isDrawn ? 1 : 0.7 + shape.drawProgress * 0.3)})`;
         ctx.lineWidth = 1.8;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
-        
+
         // Glow mais intenso durante o desenho
-        ctx.shadowColor = "#D4AF37";
+        ctx.shadowColor = primaryColor;
         ctx.shadowBlur = shape.isDrawn ? 5 : 12;
 
         drawFunctions[shape.type](0, 0, shape.size, shape.drawProgress);
@@ -632,9 +648,11 @@ export function AnimatedBackground() {
       const cornerSize = 90;
       const offset = 35;
 
-      ctx.shadowColor = "#D4AF37";
+      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() || '#D4AF37';
+      const rgb = hexToRgb(primaryColor);
+      ctx.shadowColor = primaryColor;
       ctx.shadowBlur = 8;
-      ctx.strokeStyle = "rgba(212, 175, 55, 0.45)";
+      ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.45)`;
       ctx.lineWidth = 2;
       ctx.lineCap = "round";
 
@@ -673,7 +691,8 @@ export function AnimatedBackground() {
     const animate = () => {
       time++;
 
-      ctx.fillStyle = "#0A0A0A";
+      const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-secondary').trim() || '#0A0A0A';
+      ctx.fillStyle = secondaryColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       drawPerspectiveGrid();
@@ -695,7 +714,7 @@ export function AnimatedBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 -z-10"
-      style={{ background: "#0A0A0A" }}
+      style={{ background: "var(--color-secondary)" }}
     />
   );
 }

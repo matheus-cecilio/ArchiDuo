@@ -16,7 +16,7 @@ export default function ContatoPage() {
             className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-playfair)] mb-4">
-              <span className="text-gradient-gold">Fale</span> <span className="text-white">Conosco</span>
+              <span className="text-gradient-primary">Fale</span> <span className="text-white">Conosco</span>
             </h1>
             <p className="text-[var(--color-text-muted)] max-w-2xl mx-auto text-center leading-relaxed">
               Tem um projeto em mente? Adoraríamos ouvir sobre ele.
@@ -30,7 +30,7 @@ export default function ContatoPage() {
       <section className=" bg-[var(--color-background)] min-h-[60vh] flex items-center">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto">
-              {/* Contact Info */}
+            {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}

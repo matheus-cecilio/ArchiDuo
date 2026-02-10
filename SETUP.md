@@ -65,10 +65,30 @@ npm run dev
 ### Banco de Dados
 - `npm run db:generate` - Gera o Prisma Client
 - `npm run db:push` - Sincroniza o schema sem criar migrations
-- `npm run db:migrate` - Cria e aplica migrations
+- `npm run db:migrate` - Cria e aplica novas migrações
 - `npm run db:seed` - Popula o banco com dados iniciais
 - `npm run db:reset` - Reseta o banco (CUIDADO: apaga tudo!)
 - `npm run db:studio` - Abre o Prisma Studio (GUI para o banco)
+
+---
+
+## 🛠️ Desenvolvimento e Mundanças no Banco
+
+Se você alterar o arquivo `prisma/schema.prisma` (adicionar campos, tabelas, remover coisas), você deve garantir que o banco e o código estejam sincronizados:
+
+1. **Se o servidor estiver rodando, PARE** (Ctrl+C).
+   - O Prisma precisa atualizar arquivos (`@prisma/client`) que não podem ser sobrescritos enquanto usados pelo servidor.
+
+2. **Crie a migração**:
+   ```bash
+   npm run db:migrate
+   ```
+   (Isso vai pedir um nome para a migração e atualizar o banco).
+
+3. **Reinicie o servidor**:
+   ```bash
+   npm run startup
+   ```
 
 ## 🐛 Troubleshooting
 

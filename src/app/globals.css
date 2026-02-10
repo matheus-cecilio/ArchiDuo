@@ -51,7 +51,8 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-gold: 0 4px 14px 0 rgb(212 175 55 / 0.25);
+  /* Sombra usando color-mix para opacidade baseada na cor primária */
+  --shadow-gold: 0 4px 14px 0 color-mix(in srgb, var(--color-primary), transparent 75%);
 
   /* Transições */
   --transition-fast: 150ms ease;
@@ -99,9 +100,10 @@
 
   --color-foreground: var(--color-text-primary);
 
-  --color-gold: #D4AF37;
-  --color-gold-light: #F5E6C8;
-  --color-gold-dark: #B8962E;
+  /* Mantendo compatibilidade com nomes antigos, mas mapeando para as novas variáveis */
+  --color-gold: var(--color-primary);
+  --color-gold-light: var(--color-primary-softer);
+  --color-gold-dark: var(--color-primary-dark);
 
   /* Fontes */
   --font-sans: var(--font-body);
@@ -143,26 +145,8 @@ h4,
 h5,
 h6 {
   margin: 0;
-  font-family: var(--font-heading);
-  font-weight: 600;
   line-height: 1.2;
   color: var(--color-text-primary);
-}
-
-h1 {
-  font-size: 3.5rem;
-}
-
-h2 {
-  font-size: 2.5rem;
-}
-
-h3 {
-  font-size: 1.75rem;
-}
-
-h4 {
-  font-size: 1.25rem;
 }
 
 p {
@@ -194,21 +178,49 @@ ol {
    Componentes Utilitários
    ============================================ */
 
-/* Gradiente dourado elegante */
-.gradient-gold {
+/* Gradiente primário elegante (usando variáveis calculadas pelo ThemeProvider) */
+.gradient-primary {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
 }
 
-/* Texto com gradiente dourado */
-.text-gradient-gold {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 50%, var(--color-primary) 100%);
+/* Texto com gradiente primário (Efeito Metálico) */
+.text-gradient-primary {
+  background: linear-gradient(135deg,
+      var(--color-primary-highlight) 0%,
+      var(--color-primary) 25%,
+      var(--color-primary-dark) 50%,
+      var(--color-primary) 75%,
+      var(--color-primary-highlight) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  background-size: 200% auto;
+  animation: shine 8s linear infinite;
 }
 
-/* Borda dourada com brilho */
-.border-gold-glow {
+/* Aliases para compatibilidade */
+.text-gradient-gold {
+  background: linear-gradient(135deg,
+      var(--color-primary-highlight) 0%,
+      var(--color-primary) 25%,
+      var(--color-primary-dark) 50%,
+      var(--color-primary) 75%,
+      var(--color-primary-highlight) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+  animation: shine 8s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Borda com brilho da cor primária */
+.border-primary-glow {
   border: 1px solid var(--color-primary);
   box-shadow: var(--shadow-gold);
 }
@@ -300,11 +312,11 @@ ol {
 
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgb(212 175 55 / 0.4);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary), transparent 60%);
   }
 
   50% {
-    box-shadow: 0 0 0 10px rgb(212 175 55 / 0);
+    box-shadow: 0 0 0 10px transparent;
   }
 }
 
@@ -350,16 +362,4 @@ ol {
 ::selection {
   background: var(--color-primary);
   color: var(--color-secondary);
-}
-
-
-
-.text-gradient-gold {
-  background: linear-gradient(135deg,
-      #f5e7b2 0%,
-      #d4af37 40%,
-      #b8962e 60%,
-      #f5e7b2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }

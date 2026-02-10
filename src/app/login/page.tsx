@@ -137,7 +137,7 @@ export default function LoginPage() {
 
         {/* Logo */}
         <div className="text-center mt-8">
-          <span className="text-xl font-bold font-[family-name:var(--font-playfair)] text-gradient-gold">
+          <span className="text-xl font-bold font-[family-name:var(--font-playfair)] text-gradient-primary">
             ArchiDuo
           </span>
         </div>

@@ -81,7 +81,7 @@ export default function SobrePage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
             >
-              <span className="text-gradient-gold">ArchiDuo</span>
+              <span className="text-gradient-primary">ArchiDuo</span>
             </motion.h1>
 
             {/* Linha dourada animada */}

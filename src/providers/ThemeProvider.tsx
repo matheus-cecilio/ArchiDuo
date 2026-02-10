@@ -103,6 +103,7 @@ function calculateDerivedColors(primaryColor: string) {
         light: hslToHex(h, s, Math.min(l + 0.15, 0.95)),
         dark: hslToHex(h, s, Math.max(l - 0.1, 0.2)),
         softer: hslToHex(h, Math.max(s - 0.2, 0), Math.min(l + 0.25, 0.9)),
+        highlight: hslToHex(h, Math.max(0, s - 0.2), Math.min(l + 0.45, 0.98)), // Highlight muito claro para efeito metálico
     };
 }
 
@@ -145,6 +146,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             root.style.setProperty("--color-primary-light", derived.light);
             root.style.setProperty("--color-primary-dark", derived.dark);
             root.style.setProperty("--color-primary-softer", derived.softer);
+            root.style.setProperty("--color-primary-highlight", derived.highlight);
 
             // Cores secundárias
             root.style.setProperty("--color-secondary", settings.secondaryColor);
@@ -156,6 +158,44 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
             // Background e surface (baseado no accent)
             root.style.setProperty("--color-background", settings.accentColor);
+
+            // Fontes Dinâmicas - Carregar e Aplicar
+            const fontName = settings.fontFamily;
+            const fontUrlMap: Record<string, string> = {
+                "Inter": "https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap",
+                "Playfair Display": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap",
+                "Cormorant Garamond": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap",
+                "Cinzel": "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap",
+                "Lora": "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap",
+                "Montserrat": "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap",
+                "Raleway": "https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap",
+                "Oswald": "https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap",
+            };
+
+            if (fontUrlMap[fontName]) {
+                // Carregar fonte via link tag
+                const linkId = `dynamic-font-theme`;
+                let link = document.getElementById(linkId) as HTMLLinkElement;
+                if (!link) {
+                    link = document.createElement("link");
+                    link.id = linkId;
+                    link.rel = "stylesheet";
+                    document.head.appendChild(link);
+                }
+                if (link.href !== fontUrlMap[fontName]) {
+                    link.href = fontUrlMap[fontName];
+                }
+
+                // Aplicar a fonte sobrescrevendo a variável do Next.js
+                // Aplicamos apenas na fonte de títulos/destaques
+                const fontValueMain = `'${fontName}', serif`;
+
+                root.style.setProperty("--font-playfair", fontValueMain);
+
+                if (document.body) {
+                    document.body.style.setProperty("--font-playfair", fontValueMain);
+                }
+            }
         }
     }, [settings]);
 

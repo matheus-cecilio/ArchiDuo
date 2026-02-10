@@ -57,24 +57,8 @@ model Project {
   year           String?        // Ex: "2024"
   featured       Boolean        @default(false) // Destaque na home
   
-  images         ProjectImage[]
-
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
-}
-
-model ProjectImage {
-  id            String   @id @default(cuid())
-  projectId     String
-  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  
-  url           String   // Imagem principal (ou "DEPOIS" tratada)
-  comparisonUrl String?  // Imagem "ANTES" para slider (opcional)
-  
-  caption       String?
-  order         Int      @default(0) // Ordenação na galeria
-
-  createdAt     DateTime @default(now())
 }
 
 // ============================================
@@ -134,8 +118,8 @@ model SiteSettings {
   fontFamily      String   @default("Playfair Display")
   
   // Hero Section
-  heroTitle       String   @default("Arquitetura & Design")
-  heroSubtitle    String?  @default("Transformando espaços em experiências")
+  heroTitle       String   @default("Transformando Espaços em Experiências")
+  heroSubtitle    String?  @default("Criamos projetos arquitetônicos únicos que unem funcionalidade, estética e a essência de cada cliente.")
   
   // Branding
   siteName        String   @default("ArchiDuo")

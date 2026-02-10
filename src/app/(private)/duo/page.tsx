@@ -234,7 +234,7 @@ export default function DuoZonePage() {
             <span className="text-[var(--color-primary)] font-medium">Área Exclusiva</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)] mb-4">
-            Duo <span className="text-gradient-gold">Zone</span>
+            Duo <span className="text-gradient-primary">Zone</span>
           </h1>
           <p className="text-[var(--color-text-muted)] text-center">
             Estatísticas do Fortnite da DehMarka! 🎮

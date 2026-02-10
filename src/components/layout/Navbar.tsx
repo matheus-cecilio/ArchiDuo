@@ -28,7 +28,7 @@ export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProp
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold font-[family-name:var(--font-playfair)] text-gradient-gold">
+            <span className="text-2xl font-bold font-[family-name:var(--font-playfair)] text-gradient-primary">
               {siteName}
             </span>
           </Link>
