@@ -278,7 +278,7 @@ export default function AparenciaPage() {
                 className="flex items-center justify-between mb-8"
             >
                 <div>
-                    <h1 className="text-3xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)]">
+                    <h1 className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-playfair)] text-[var(--color-text-primary)]">
                         Aparência do Site
                     </h1>
                     <p className="text-[var(--color-text-muted)] mt-1">
@@ -324,7 +324,7 @@ export default function AparenciaPage() {
                         <div className="space-y-6">
                             {/* Primary Color */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
+                                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2 mt-6">
                                     Cor Primária (Destaques e Botões)
                                 </label>
                                 <div className="flex gap-3 mb-3">
@@ -430,7 +430,7 @@ export default function AparenciaPage() {
                         </h2>
 
                         <div>
-                            <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
+                            <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2 mt-6">
                                 Fonte dos Títulos
                             </label>
                             <select
@@ -450,10 +450,10 @@ export default function AparenciaPage() {
                     {/* Hero Section */}
                     <Card>
                         <h2 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">
-                            Seção Hero
+                            Textos do Hero
                         </h2>
 
-                        <div className="space-y-5">
+                        <div className="space-y-5 mt-6">
                             <Input
                                 label="Nome do Site"
                                 value={settings.siteName}
@@ -548,7 +548,7 @@ export default function AparenciaPage() {
 
                                         {/* Main Title */}
                                         <h1
-                                            className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
+                                            className="text-4xl md:text-5xl font-bold mb-6 leading-tight"
                                             style={{ fontFamily: `'${settings.fontFamily}', serif` }}
                                         >
                                             <span className="text-[var(--color-accent)]/90 block sm:inline mr-2">Transformando</span>
@@ -559,7 +559,7 @@ export default function AparenciaPage() {
                                         </h1>
 
                                         {/* Subtitle */}
-                                        <p className="text-lg md:text-xl text-[var(--color-accent)]/60 mb-12 max-w-2xl mx-auto leading-relaxed">
+                                        <p className="text-base md:text-lg text-[var(--color-accent)]/60 mb-12 max-w-2xl mx-auto leading-relaxed">
                                             {settings.heroSubtitle || "Criamos projetos arquitetônicos únicos que unem funcionalidade, estética e a essência de cada cliente."}
                                         </p>
 
@@ -598,7 +598,7 @@ export default function AparenciaPage() {
                             </div>
                         </div>
 
-                        <p className="text-xs text-[var(--color-text-muted)] text-center mt-2">
+                        <p className="text-xs text-[var(--color-text-muted)] text-center pt-6 block">
                             Preview aproximado. Salve para ver o resultado final no site.
                         </p>
                     </Card>

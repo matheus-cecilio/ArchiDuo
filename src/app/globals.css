@@ -161,17 +161,7 @@ ol {
 }
 
 @media (max-width: 768px) {
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-  }
+  /* No more forced heading sizes here to allow Tailwind classes to work */
 }
 
 /* ============================================

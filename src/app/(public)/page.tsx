@@ -67,8 +67,7 @@ export default function HomePage() {
               </div>
 
 
-              {/* Main Title */}
-              <h1 className="text-5xl md:text-7xl font-bold font-[family-name:var(--font-playfair)] mb-6 leading-tight">
+              <h1 className="text-4xl md:text-7xl font-bold font-[family-name:var(--font-playfair)] mb-6 leading-tight">
                 <span className="text-[var(--color-surface)]/80">Transformando</span>{" "}
                 <span className="text-gradient-primary">Espaços</span>
                 <br />
@@ -77,7 +76,7 @@ export default function HomePage() {
               </h1>
 
               {/* Subtitle */}
-              <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base md:text-lg text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
                 Criamos projetos arquitetônicos únicos que unem funcionalidade,
                 estética e a essência de cada cliente.
               </p>
@@ -216,7 +215,7 @@ export default function HomePage() {
               <div className="w-12 h-px bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent"></div>
             </div>
 
-            <h2 className="text-5xl md:text-6xl font-bold font-[family-name:var(--font-playfair)] !text-[var(--color-accent)] mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold font-[family-name:var(--font-playfair)] !text-[var(--color-accent)] mb-4">
               Serviços <span className="text-gradient-primary">Exclusivos</span>
             </h2>
 
