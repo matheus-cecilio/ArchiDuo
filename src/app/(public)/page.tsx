@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Sparkles, Award, Users, X, ChevronRight } from "lucide-react";
 import { Button, AnimatedBackground } from "@/components/ui";
+import { useTheme } from "@/providers/ThemeProvider";
 
 const PROJECTS = [
   { src: "/projects/img-boa1.png", alt: "Projeto 1" },
@@ -25,7 +26,27 @@ const PROJECTS = [
   { src: "/projects/img-boa15.png", alt: "Projeto 15" },
 ];
 
+// Helper para renderizar o título com formatação rica se for o texto padrão
+const renderHeroTitle = (title: string) => {
+  const defaultTitle = "Transformando Espaços em Experiências";
+
+  if (title === defaultTitle) {
+    return (
+      <>
+        <span className="text-[var(--color-accent)]/90">Transformando</span>{" "}
+        <span className="text-gradient-primary">Espaços</span>
+        <br className="hidden sm:block" />
+        <span className="text-[var(--color-accent)]/90">em</span>{" "}
+        <span className="text-gradient-primary">Experiências</span>
+      </>
+    );
+  }
+
+  return <span className="text-[var(--color-accent)]">{title}</span>;
+};
+
 export default function HomePage() {
+  const { settings } = useTheme();
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
   useEffect(() => {
@@ -62,23 +83,18 @@ export default function HomePage() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8">
                 <Sparkles className="w-4 h-4 text-[var(--color-primary)]" />
                 <span className="text-sm text-[var(--color-primary)]">
-                  Arquitetura & Design de Interiores
+                  {settings.siteName}
                 </span>
               </div>
 
 
-              <h1 className="text-4xl md:text-7xl font-bold font-[family-name:var(--font-playfair)] mb-6 leading-tight">
-                <span className="text-[var(--color-surface)]/80">Transformando</span>{" "}
-                <span className="text-gradient-primary">Espaços</span>
-                <br />
-                <span className="text-[var(--color-surface)]/80">em</span>{" "}
-                <span className="text-gradient-primary">Experiências</span>
+              <h1 className="text-4xl md:text-6xl font-bold font-[family-name:var(--font-playfair)] mb-6 leading-tight">
+                {renderHeroTitle(settings.heroTitle)}
               </h1>
 
               {/* Subtitle */}
               <p className="text-base md:text-lg text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-                Criamos projetos arquitetônicos únicos que unem funcionalidade,
-                estética e a essência de cada cliente.
+                {settings.heroSubtitle}
               </p>
 
               {/* CTAs */}
@@ -239,7 +255,7 @@ export default function HomePage() {
                 y: -8,
                 transition: { type: "spring", stiffness: 300, damping: 20 }
               }}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-background)] border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-zinc-100 border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
             >
               {/* Card Background Pattern */}
               <div className="absolute inset-0 opacity-20"></div>
@@ -306,7 +322,7 @@ export default function HomePage() {
                 y: -8,
                 transition: { type: "spring", stiffness: 300, damping: 20 }
               }}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-background)] border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-zinc-100 border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-all duration-500 w-full lg:w-auto lg:flex-1 lg:max-w-[500px]"
             >
               {/* Card Background Pattern */}
               <div className="absolute inset-0 opacity-20"></div>

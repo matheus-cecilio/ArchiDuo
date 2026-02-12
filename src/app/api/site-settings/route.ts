@@ -1,18 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { defaultSettings } from "@/config/theme";
 
 const prisma = new PrismaClient();
-
-// Configurações padrão
-const defaultSettings = {
-    primaryColor: "#D4AF37",
-    secondaryColor: "#0A0A0A",
-    accentColor: "#FAFAFA",
-    fontFamily: "Playfair Display",
-    heroTitle: "Transformando Espaços em Experiências",
-    heroSubtitle: "Criamos projetos arquitetônicos únicos que unem funcionalidade, estética e a essência de cada cliente.",
-    siteName: "ArchiDuo",
-};
 
 // GET - Buscar configurações atuais
 export async function GET() {

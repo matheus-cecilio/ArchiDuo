@@ -14,10 +14,14 @@ const quickLinks = [
   { label: "Contato", href: "/contato" },
 ];
 
+import { useTheme } from "@/providers/ThemeProvider";
+
 export function Footer({
-  siteName = "ArchiDuo",
+  siteName: propSiteName,
   instagram = "archiduo",
 }: FooterProps) {
+  const { settings } = useTheme();
+  const siteName = propSiteName || settings.siteName;
   const currentYear = new Date().getFullYear();
 
   return (

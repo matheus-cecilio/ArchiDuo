@@ -18,7 +18,11 @@ interface NavbarProps {
   isLoggedIn?: boolean;
 }
 
-export function Navbar({ siteName = "ArchiDuo", isLoggedIn = false }: NavbarProps) {
+import { useTheme } from "@/providers/ThemeProvider";
+
+export function Navbar({ siteName: propSiteName, isLoggedIn = false }: NavbarProps) {
+  const { settings } = useTheme();
+  const siteName = propSiteName || settings.siteName;
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 

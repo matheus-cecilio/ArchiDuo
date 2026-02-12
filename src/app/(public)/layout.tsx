@@ -8,13 +8,11 @@ export default function PublicLayout({
 }) {
   return (
     <>
-      <Navbar siteName="ArchiDuo" />
+      <Navbar />
       <main className="min-h-screen pt-20">
         {children}
       </main>
-      <Footer 
-        siteName="ArchiDuo"
-        email="contato@archiduo.com"
+      <Footer
         instagram="archiduo"
       />
     </>
